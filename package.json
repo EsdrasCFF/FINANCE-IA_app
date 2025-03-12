@@ -10,8 +10,10 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@prisma/client": "^5.21.1",
     "git-commit-msg-linter": "^5.0.8",
     "next": "^14.2.24",
+    "prisma": "^5.21.1",
     "react": "^18",
     "react-dom": "^18"
   },
