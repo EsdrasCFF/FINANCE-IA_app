@@ -1,23 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
-  "plugins": [
-    "simple-import-sort"
-  ],
+  "plugins": ["simple-import-sort"],
   "rules": {
-    "simple-import-sort/imports": [
-      "error",
-      {
-        "groups": [
-          // Pacotes de React e Next.js primeiro
-          ["^react", "^next"],
-          // Pacotes de terceiros
-          ["^@?\\w"],
-          // Pacotes locais (como componentes e utilitários)
-          ["^@/"],
-          // Imports relativos
-          ["^\\./", "^../"]
-        ]
-      }
-    ],
+    "simple-import-sort/imports": "error"
   }
 }
