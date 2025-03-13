@@ -26,6 +26,8 @@ model Transaction {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt
 
+  userId String @map("user_id")
+
   @@map("transactions")
 }
 
@@ -33,6 +35,8 @@ model Category {
   id String @id @default(cuid())
   name String
   type TransactionType
+
+  userId String @map("user_id")
 
   @@map("categories")
   Transaction Transaction[]
