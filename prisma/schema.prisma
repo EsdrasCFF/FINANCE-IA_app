@@ -19,8 +19,8 @@ model Transaction {
   type TransactionType
   amount Int
   
-  categoryId String 
-  category Category @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  category Category? @relation(fields: [categoryId], references: [id])
 
   paymentMethod PaymentMethod @map("payment_method")
   createdAt DateTime @default(now()) @map("created_at")
