@@ -3,7 +3,7 @@
 import { Transaction } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { TransactionTypeBadge } from '../_components/transaction-type-bagde'
+import { TransactionTypeBadge } from '../_components/type-bagde'
 
 export const transactionsColumns: ColumnDef<Transaction>[] = [
   {
