@@ -74,13 +74,13 @@ export const transactionsColumns: ColumnDef<TransactionsType>[] = [
     header: '',
     cell: () => {
       return (
-        <div>
-          <Button variant="ghost">
-            <PencilIcon className="size-4" />
+        <div className="flex gap-1">
+          <Button variant="ghost" className="size-6">
+            <PencilIcon />
           </Button>
 
-          <Button variant="ghost">
-            <TrashIcon className="size-4" />
+          <Button variant="ghost" className="size-6">
+            <TrashIcon />
           </Button>
         </div>
       )
