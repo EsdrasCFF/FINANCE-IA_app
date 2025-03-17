@@ -1,4 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
@@ -20,4 +22,9 @@ export function formatCurrency(value: number) {
   })
 
   return amount.format(value)
+}
+
+export function formatDateToCompleteLabel(date: Date) {
+  const newDate = format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+  return newDate
 }
