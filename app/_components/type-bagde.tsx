@@ -2,8 +2,9 @@
 
 import { TransactionType } from '@prisma/client'
 import { CircleIcon } from 'lucide-react'
+import { tv } from 'tailwind-variants'
 
-import { cn } from '../_lib/utils'
+import { TRANSACTION_TYPE_LABELS } from '../transactions/_columns'
 import { Badge } from './ui/badge'
 
 interface TransactionTypeBadgeProps {
@@ -11,26 +12,32 @@ interface TransactionTypeBadgeProps {
 }
 
 export function TransactionTypeBadge({ type }: TransactionTypeBadgeProps) {
-  let variant = ''
-  let transactionType = ''
+  const textColor = tv({
+    base: 'text-xs font-bold',
+    variants: {
+      type: {
+        DEPOSIT: 'text-customGreen bg-customGreen/15 hover:bg-customGreen/15',
+        EXPENSE: 'text-customRed bg-customRed/15 hover:bg-customRed/15',
+        INVESTMENT: 'text-white bg-white/15 hover:bg-white/15',
+      },
+    },
+  })
 
-  if (type == 'DEPOSIT') {
-    variant = 'green-700'
-    transactionType = 'Receita'
-  }
-  if (type == 'EXPENSE') {
-    variant = 'red-700'
-    transactionType = 'Despesa'
-  }
-  if (type == 'INVESTMENT') {
-    variant = 'white'
-    transactionType = 'Investimento'
-  }
+  const fillColor = tv({
+    base: 'mr-1',
+    variants: {
+      fill: {
+        DEPOSIT: 'fill-customGreen',
+        EXPENSE: 'fill-customRed',
+        INVESTMENT: 'fill-white',
+      },
+    },
+  })
 
   return (
-    <Badge className={cn('bg-muted text-xs font-bold hover:bg-muted', `text-${variant}`)}>
-      <CircleIcon size={10} className={cn('mr-1', `fill-${variant} `)} />
-      <p>{transactionType}</p>
+    <Badge className={textColor({ type })}>
+      <CircleIcon size={10} className={fillColor({ fill: type })} />
+      <p>{TRANSACTION_TYPE_LABELS[type]}</p>
     </Badge>
   )
 }
