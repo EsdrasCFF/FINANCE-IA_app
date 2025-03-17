@@ -18,6 +18,7 @@ model Transaction {
   name String
   type TransactionType
   amount Int
+  date DateTime
   
   categoryId String?
   category Category? @relation(fields: [categoryId], references: [id])
