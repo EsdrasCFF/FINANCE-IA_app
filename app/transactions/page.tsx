@@ -6,7 +6,22 @@ import { db } from '../_lib/prisma'
 import { transactionsColumns } from './_columns'
 
 export default async function TransactionsPage() {
-  const transactions = await db.transaction.findMany({})
+  const transactionsWithCategory = await db.transaction.findMany({
+    include: {
+      category: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  })
+
+  const transactions = transactionsWithCategory.map((transaction) => {
+    return {
+      ...transaction,
+      category: transaction.category?.name || null,
+    }
+  })
 
   return (
     <div className="space-y-6 px-6">
