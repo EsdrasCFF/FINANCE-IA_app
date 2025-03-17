@@ -4,7 +4,6 @@ import { Transaction } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 import { PencilIcon, TrashIcon } from 'lucide-react'
 
-import { TransactionTypeBadge } from '../_components/type-bagde'
 import { Badge } from '../_components/ui/badge'
 import { Button } from '../_components/ui/button'
 import {
@@ -12,6 +11,7 @@ import {
   formatCurrency,
   formatDateToCompleteLabel,
 } from '../_lib/utils'
+import { TransactionTypeBadge } from './_components/type-bagde'
 
 interface TransactionsType extends Transaction {
   category: string | null
