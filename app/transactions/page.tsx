@@ -1,11 +1,18 @@
-import { ArrowDownUp } from 'lucide-react'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
 
-import { Button } from '../_components/ui/button'
+import { AddTransactionButton } from '../_components/add-transaction-button'
 import { DataTable } from '../_components/ui/data-table'
 import { db } from '../_lib/prisma'
 import { transactionsColumns } from './_columns'
 
 export default async function TransactionsPage() {
+  const { userId } = await auth()
+
+  if (!userId) {
+    return redirect('/login')
+  }
+
   const transactionsWithCategory = await db.transaction.findMany({
     include: {
       category: {
@@ -13,6 +20,9 @@ export default async function TransactionsPage() {
           name: true,
         },
       },
+    },
+    where: {
+      userId,
     },
   })
 
@@ -23,13 +33,13 @@ export default async function TransactionsPage() {
     }
   })
 
+  const categories = await db.category.findMany({ where: { userId } })
+
   return (
     <div className="space-y-6 px-6">
-      <div className="flex w-full items-center justify-between">
+      <div className="mt-5 flex w-full items-center justify-between">
         <h1 className="text-2xl font-bold">Transações</h1>
-        <Button className="rounded-full text-sm font-bold">
-          Adicionar Transação <ArrowDownUp className="ml-1" />
-        </Button>
+        <AddTransactionButton categories={categories} />
       </div>
 
       <DataTable columns={transactionsColumns} data={transactions} />
