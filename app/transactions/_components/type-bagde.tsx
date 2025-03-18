@@ -4,8 +4,9 @@ import { TransactionType } from '@prisma/client'
 import { CircleIcon } from 'lucide-react'
 import { tv } from 'tailwind-variants'
 
+import { TRANSACTION_TYPE_LABELS } from '@/app/_constants/transactions'
+
 import { Badge } from '../../_components/ui/badge'
-import { TRANSACTION_TYPE_LABELS } from '../_columns'
 
 interface TransactionTypeBadgeProps {
   type: TransactionType
