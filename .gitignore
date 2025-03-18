@@ -35,8 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+
+# my ignores files
 video.txt
-
 .env
-
 docker-compose.yml
+.postgres-data

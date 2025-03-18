@@ -2,10 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Category, PaymentMethod, TransactionType } from '@prisma/client'
-import { ArrowDownUp } from 'lucide-react'
+import { ArrowDownUp, Loader2 } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { addTransaction } from '../_actions/transactions/add-transactions'
 import { PAYMENT_METHOD_OPTIONS, TRANSACTION_TYPE_OPTIONS } from '../_constants/transactions'
 import { MoneyInput } from './money-input'
 import { Button } from './ui/button'
@@ -24,9 +26,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
-const formSchema = z.object({
+export const addTransactionFormSchema = z.object({
   name: z.string().trim().min(3, { message: 'O nome é obrigatório!' }),
-  amount: z.string(),
+  amount: z
+    .number({ required_error: 'Valor é obrigatório!' })
+    .positive({ message: 'O valor precisa ser positivo' }),
   type: z.nativeEnum(TransactionType),
   category: z.string({ required_error: '' }).trim().min(3, { message: 'Categoria é obrigatório!' }),
   paymentMethod: z.nativeEnum(PaymentMethod, {
@@ -37,7 +41,7 @@ const formSchema = z.object({
   }),
 })
 
-type FormSchemaData = z.infer<typeof formSchema>
+type FormSchemaData = z.infer<typeof addTransactionFormSchema>
 
 interface AddTransactionButtonProps {
   categories: Category[]
@@ -45,9 +49,8 @@ interface AddTransactionButtonProps {
 
 export function AddTransactionButton({ categories }: AddTransactionButtonProps) {
   const form = useForm<FormSchemaData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(addTransactionFormSchema),
     defaultValues: {
-      amount: '',
       date: new Date(),
       name: '',
       paymentMethod: PaymentMethod.PIX,
@@ -55,9 +58,7 @@ export function AddTransactionButton({ categories }: AddTransactionButtonProps) 
     },
   })
 
-  function handleSubmitForm(data: FormSchemaData) {
-    console.log(data)
-  }
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
   const selectedTransactionType = form.watch('type')
 
@@ -65,11 +66,25 @@ export function AddTransactionButton({ categories }: AddTransactionButtonProps) 
     (category) => category.type == selectedTransactionType
   )
 
+  const isSubmitting = form.formState.isSubmitting
+
+  async function handleSubmitForm(data: FormSchemaData) {
+    try {
+      await addTransaction(data)
+      setDialogIsOpen(false)
+      form.reset()
+    } catch (err) {
+      console.error('An error occurred while creating the transaction in the database:', err)
+    }
+  }
+
   return (
     <Dialog
       onOpenChange={(open) => {
+        setDialogIsOpen(open)
         if (!open) form.reset()
       }}
+      open={dialogIsOpen}
     >
       <DialogTrigger asChild>
         <Button className="rounded-full text-sm font-bold">
@@ -105,7 +120,12 @@ export function AddTransactionButton({ categories }: AddTransactionButtonProps) 
                 <FormItem>
                   <FormLabel>Valor</FormLabel>
                   <FormControl>
-                    <MoneyInput placeholder="Digite o valor..." {...field} />
+                    <MoneyInput
+                      placeholder="Digite o valor..."
+                      onValueChange={({ floatValue }) => field.onChange(floatValue)}
+                      value={field.value}
+                      onBlur={field.onBlur}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -209,11 +229,13 @@ export function AddTransactionButton({ categories }: AddTransactionButtonProps) 
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline" type="button">
+                <Button variant="outline" type="button" disabled={isSubmitting}>
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button variant="default"> Adicionar </Button>
+              <Button variant="default" disabled={isSubmitting}>
+                {isSubmitting && <Loader2 className="ml-2 animate-spin" />} Adicionar
+              </Button>
             </DialogFooter>
           </form>
         </Form>

@@ -9,8 +9,6 @@ import { Button } from '../_components/ui/button'
 export default async function TransactionPage() {
   const { userId } = await auth()
 
-  console.log({ userId })
-
   if (userId) {
     return redirect('/')
   }
@@ -23,8 +21,9 @@ export default async function TransactionPage() {
         <h1 className="mt-8 text-4xl font-bold">Bem-Vindo(a)</h1>
 
         <p className="mb-8 mt-3 text-muted-foreground">
-          A Finance AI é uma plataforma de gestão financeira que utiliza IA para monitorar suas movimentações, e
-          oferecer insights personalizados, facilitando o controle do seu orçamento.
+          A Finance AI é uma plataforma de gestão financeira que utiliza IA para monitorar suas
+          movimentações, e oferecer insights personalizados, facilitando o controle do seu
+          orçamento.
         </p>
         <SignInButton>
           <Button variant="outline">
