@@ -3,6 +3,7 @@
 import { Category } from '@prisma/client'
 import { PiggyBankIcon, TrendingDown, TrendingUp, WalletIcon } from 'lucide-react'
 import { useQueryState } from 'nuqs'
+import CountUp from 'react-countup'
 
 import { AddTransactionButton } from '@/app/_components/add-transaction-button'
 import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
@@ -62,7 +63,13 @@ export function SummaryCards({ categories }: Props) {
 
           <CardContent className="flex w-full justify-between">
             <p className="text-4xl font-bold">
-              {formatCurrency(result.DEPOSIT - (result.EXPENSE + result.INVESTMENT))}
+              <CountUp
+                start={0}
+                end={result.DEPOSIT - (result.EXPENSE + result.INVESTMENT)}
+                formattingFn={formatCurrency}
+                decimals={2}
+                decimalPlaces={2}
+              />
             </p>
             <AddTransactionButton categories={categories} />
           </CardContent>
