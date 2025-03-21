@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
-import { format, subMonths } from 'date-fns'
+import { endOfMonth, format, parse, startOfMonth, subMonths } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { twMerge } from 'tailwind-merge'
 
@@ -67,4 +67,21 @@ export function generateMonths(distanteInMonth: number) {
   })
 
   return generateMonths
+}
+
+export function getMonthRange(month: string) {
+  const date = parse(month, 'yyyy-MM', new Date()) // Converte "2025-02" para um Date
+  const firstDay = format(startOfMonth(date), 'yyyy-MM-dd') // Primeiro dia do mês
+  const lastDay = format(endOfMonth(date), 'yyyy-MM-dd') // Último dia do mês
+
+  return { firstDay, lastDay }
+}
+
+export function getMonthRangeNow() {
+  const now = new Date() // Garante que estamos lidando com um Date válido
+
+  const firstDay = format(startOfMonth(now), 'yyyy-MM-dd')
+  const lastDay = format(endOfMonth(now), 'yyyy-MM-dd')
+
+  return { firstDay, lastDay }
 }
