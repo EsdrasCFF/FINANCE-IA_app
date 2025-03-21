@@ -27,7 +27,9 @@ export function NavBar() {
     <nav className="mx-8 my-5 flex justify-between">
       {/* LEFT SIDE */}
       <div className="flex items-center gap-12">
-        <Image src="/logo.svg" width={173} height={39} alt="Logo" />
+        <Link href="/">
+          <Image src="/logo.svg" width={173} height={39} alt="Logo" />
+        </Link>
         {links.map((link) => (
           <Link
             href={link.href}
