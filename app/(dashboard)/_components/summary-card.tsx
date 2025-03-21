@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
+import CountUp from 'react-countup'
 
-import { Card, CardContent,CardHeader } from '@/app/_components/ui/card'
-import { cn } from '@/app/_lib/utils'
-
+import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
+import { cn, formatCurrency } from '@/app/_lib/utils'
 interface SummaryCardProps {
   icon: ReactNode
   title: string
-  amount: string
+  amount: number
   style: string
 }
 
@@ -21,7 +21,15 @@ export function SummaryCard({ icon, title, amount, style }: SummaryCardProps) {
       </CardHeader>
 
       <CardContent>
-        <p className="text-2xl font-bold">{amount}</p>
+        <p className="text-2xl font-bold">
+          <CountUp
+            start={0}
+            end={amount}
+            formattingFn={formatCurrency}
+            decimals={2}
+            decimalPlaces={2}
+          />
+        </p>
       </CardContent>
     </Card>
   )
