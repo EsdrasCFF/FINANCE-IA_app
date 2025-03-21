@@ -6,7 +6,7 @@ import { Prisma, TransactionType } from '@prisma/client'
 import { db } from '@/app/_lib/prisma'
 import { convertFromHundredUnitsToAmount } from '@/app/_lib/utils'
 
-export async function getSummary() {
+export async function getSummary(month: { firstDay: string; lastDay: string }) {
   const { userId } = await auth()
 
   if (!userId) {
@@ -17,6 +17,7 @@ export async function getSummary() {
     SELECT type, SUM(COALESCE(amount, 0)) as total
     FROM "transactions"
     WHERE "user_id" = ${userId}
+    AND "date" BETWEEN ${month.firstDay}::timestamp AND ${month.lastDay}::timestamp
     GROUP BY type
   `
 
