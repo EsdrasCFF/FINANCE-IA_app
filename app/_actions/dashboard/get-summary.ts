@@ -1,7 +1,7 @@
 'use server'
 
 import { auth } from '@clerk/nextjs/server'
-import { Prisma,TransactionType } from '@prisma/client'
+import { Prisma, TransactionType } from '@prisma/client'
 
 import { db } from '@/app/_lib/prisma'
 import { convertFromHundredUnitsToAmount } from '@/app/_lib/utils'
