@@ -6,6 +6,8 @@ import type { Metadata } from 'next'
 import { Mulish } from 'next/font/google'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
+import { Providers } from './_providers'
+
 const mulish = Mulish({
   subsets: ['latin-ext'],
 })
@@ -23,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider appearance={{ baseTheme: dark }}>
-        <body className={`${mulish.className} dark flex flex-col antialiased`}>
-          <NuqsAdapter> {children} </NuqsAdapter>
-        </body>
+        <Providers>
+          <body className={`${mulish.className} dark flex flex-col antialiased`}>
+            <NuqsAdapter> {children} </NuqsAdapter>
+          </body>
+        </Providers>
       </ClerkProvider>
     </html>
   )
