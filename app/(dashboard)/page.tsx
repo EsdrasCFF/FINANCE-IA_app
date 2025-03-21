@@ -4,9 +4,8 @@ import { redirect } from 'next/navigation'
 import { NavBar } from '../_components/nav-bar'
 import { db } from '../_lib/prisma'
 import { SummaryCards } from './_components/summary-cards'
-import { TimeSelect } from './_components/time-select'
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: { month?: string } }) {
   const { userId } = await auth()
 
   if (!userId) {
@@ -19,13 +18,8 @@ export default async function Home() {
     <>
       <NavBar />
 
-      <div className="flex w-full justify-between px-6 py-5">
-        <h1 className="text-2xl font-bold">Transações</h1>
-        <TimeSelect />
-      </div>
-
       <div className="flex w-full px-6">
-        <SummaryCards categories={categories} />
+        <SummaryCards categories={categories} month={searchParams.month ?? '2025-02'} />
       </div>
     </>
   )
