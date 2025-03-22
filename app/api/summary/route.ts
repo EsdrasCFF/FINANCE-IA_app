@@ -1,3 +1,4 @@
+import { isMatch } from 'date-fns'
 import { NextResponse } from 'next/server'
 
 import { getSummary } from '@/app/_actions/dashboard/get-summary'
@@ -9,12 +10,16 @@ export async function GET(request: Request) {
 
     const month = url.searchParams.get('month')
 
-    // if (!month) {
-    //   return NextResponse.json(
-    //     { error: { mesage: 'MISSING_REQUIRED_QUERY_PARAMTER' } },
-    //     { status: 400 }
-    //   )
-    // }
+    if (month && month != 'null') {
+      const isValidMonth = isMatch(month, 'yyyy-MM')
+
+      if (!isValidMonth) {
+        return NextResponse.json(
+          { error: { mesage: 'PROVIDED_QUERY_PARAMTER_IS_INVALID' } },
+          { status: 400 }
+        )
+      }
+    }
 
     let period
 
