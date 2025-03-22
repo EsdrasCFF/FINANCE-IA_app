@@ -33,5 +33,20 @@ export async function getSummary(month: { firstDay: string; lastDay: string }) {
     summary[value.type] = convertFromHundredUnitsToAmount(Number(value.total))
   })
 
-  return summary
+  const transactionsTotal = result.reduce((acc, cur) => {
+    const total = acc + convertFromHundredUnitsToAmount(Number(cur.total))
+
+    return total
+  }, 0)
+
+  const transactionPercentages = {
+    deposit: Math.round((summary.DEPOSIT / transactionsTotal) * 100),
+    expense: Math.round((summary.EXPENSE / transactionsTotal) * 100),
+    investment: Math.round((summary.INVESTMENT / transactionsTotal) * 100),
+  }
+
+  return {
+    ...summary,
+    transactionPercentages,
+  }
 }

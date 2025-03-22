@@ -2,11 +2,18 @@
 
 import { useQuery } from '@tanstack/react-query'
 
+interface ITransactionsPercentage {
+  expense: number
+  investment: number
+  deposit: number
+}
+
 interface IResponseType {
   summary: {
     DEPOSIT: number
     EXPENSE: number
     INVESTMENT: number
+    transactionPercentages: ITransactionsPercentage
   }
 }
 
