@@ -12,6 +12,7 @@ import { formatCurrency } from '@/app/_lib/utils'
 
 import { SummaryCard } from './summary-card'
 import { TimeSelect } from './time-select'
+import { TransactionsPieChart } from './transactions-pie-chart'
 
 interface Props {
   categories: Category[]
@@ -22,7 +23,12 @@ export function SummaryCards({ categories }: Props) {
 
   const getSummaryQuery = useGetSummary(month)
 
-  const result = getSummaryQuery.data?.summary || { DEPOSIT: 0, INVESTMENT: 0, EXPENSE: 0 }
+  const result = getSummaryQuery.data?.summary || {
+    DEPOSIT: 0,
+    INVESTMENT: 0,
+    EXPENSE: 0,
+    transactionPercentages: { expense: 0, investment: 0, deposit: 0 },
+  }
 
   const cardProps = [
     {
@@ -52,40 +58,53 @@ export function SummaryCards({ categories }: Props) {
         <TimeSelect setMonth={setMonth} />
       </div>
 
-      <div className="w-full space-y-6">
-        <Card className="w-full bg-muted">
-          <CardHeader className="flex flex-row gap-2">
-            <div className="w-fit rounded-md bg-background p-2">
-              <WalletIcon size={16} />
-            </div>
-            <p className="text-muted-foreground">Saldo</p>
-          </CardHeader>
+      <div className="grid grid-cols-[2fr,1fr]">
+        <div className="space-y-6">
+          <Card className="w-full bg-muted">
+            <CardHeader className="flex flex-row gap-2">
+              <div className="w-fit rounded-md bg-background p-2">
+                <WalletIcon size={16} />
+              </div>
+              <p className="text-muted-foreground">Saldo</p>
+            </CardHeader>
 
-          <CardContent className="flex w-full justify-between">
-            <p className="text-4xl font-bold">
-              <CountUp
-                start={0}
-                end={result.DEPOSIT - (result.EXPENSE + result.INVESTMENT)}
-                formattingFn={formatCurrency}
-                decimals={2}
-                decimalPlaces={2}
+            <CardContent className="flex w-full justify-between">
+              <p className="text-4xl font-bold">
+                <CountUp
+                  start={0}
+                  end={result.DEPOSIT - (result.EXPENSE + result.INVESTMENT)}
+                  formattingFn={formatCurrency}
+                  decimals={2}
+                  decimalPlaces={2}
+                />
+              </p>
+              <AddTransactionButton categories={categories} />
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-3 gap-6">
+            {cardProps.map((inf) => (
+              <SummaryCard
+                amount={inf.amount}
+                icon={inf.icon}
+                title={inf.title}
+                key={inf.title}
+                style={inf.style}
               />
-            </p>
-            <AddTransactionButton categories={categories} />
-          </CardContent>
-        </Card>
+            ))}
+          </div>
 
-        <div className="grid grid-cols-3 gap-6">
-          {cardProps.map((inf) => (
-            <SummaryCard
-              amount={inf.amount}
-              icon={inf.icon}
-              title={inf.title}
-              key={inf.title}
-              style={inf.style}
+          <div className="grid grid-cols-3 gap-6">
+            <TransactionsPieChart
+              expenseTotal={result.EXPENSE}
+              depositTotal={result.DEPOSIT}
+              investmentTotal={result.INVESTMENT}
+              transactionPercentages={result.transactionPercentages}
             />
-          ))}
+          </div>
         </div>
+
+        <div>Other side</div>
       </div>
     </div>
   )
