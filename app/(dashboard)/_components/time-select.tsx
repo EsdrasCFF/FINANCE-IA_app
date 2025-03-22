@@ -29,11 +29,12 @@ export function TimeSelect({ setMonth }: Props) {
 
   const distanceInMonths = differenceInMonths(selectedMonth, today)
 
-  const [months, _] = useState(generateMonths(distanceInMonths))
+  const [months, setMonths] = useState(generateMonths(distanceInMonths))
 
   function handleSelectValueChange(value: string) {
     setSelectedMonth(value)
     setMonth(value)
+    setMonths(generateMonths(distanceInMonths))
   }
 
   return (
