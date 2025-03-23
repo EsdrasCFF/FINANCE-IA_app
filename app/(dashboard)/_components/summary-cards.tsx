@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
 import { useGetSummary } from '@/app/_features/dashboard/api/use-get-summary'
 import { formatCurrency } from '@/app/_lib/utils'
 
+import { ExpensesPerCategory } from './expenses-per-category'
 import { SummaryCard } from './summary-card'
 import { TimeSelect } from './time-select'
 import { TransactionsPieChart } from './transactions-pie-chart'
@@ -29,6 +30,8 @@ export function SummaryCards({ categories }: Props) {
     EXPENSE: 0,
     transactionPercentages: { expense: 0, investment: 0, deposit: 0 },
   }
+
+  const categoriesSummary = getSummaryQuery.data?.categorySummary
 
   const cardProps = [
     {
@@ -94,13 +97,17 @@ export function SummaryCards({ categories }: Props) {
             ))}
           </div>
 
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid h-full max-h-[400px] grid-cols-3 gap-6">
             <TransactionsPieChart
               expenseTotal={result.EXPENSE}
               depositTotal={result.DEPOSIT}
               investmentTotal={result.INVESTMENT}
               transactionPercentages={result.transactionPercentages}
             />
+
+            <div className="col-span-2">
+              <ExpensesPerCategory categorySummary={categoriesSummary} />
+            </div>
           </div>
         </div>
 
