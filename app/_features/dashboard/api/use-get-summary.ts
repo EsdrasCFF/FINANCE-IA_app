@@ -8,6 +8,13 @@ interface ITransactionsPercentage {
   deposit: number
 }
 
+export interface ICategorySummary {
+  id: string
+  name: string
+  totalAmount: number
+  percentage: number
+}
+
 interface IResponseType {
   summary: {
     DEPOSIT: number
@@ -15,6 +22,7 @@ interface IResponseType {
     INVESTMENT: number
     transactionPercentages: ITransactionsPercentage
   }
+  categorySummary: ICategorySummary[]
 }
 
 export function useGetSummary(month: string | null) {

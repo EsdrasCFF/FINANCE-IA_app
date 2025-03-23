@@ -1,6 +1,7 @@
 import { isMatch } from 'date-fns'
 import { NextResponse } from 'next/server'
 
+import { getSummaryByCategories } from '@/app/_actions/categories/get-summary-by-categories'
 import { getSummary } from '@/app/_actions/dashboard/get-summary'
 import { getMonthRange, getMonthRangeNow } from '@/app/_lib/utils'
 
@@ -31,7 +32,9 @@ export async function GET(request: Request) {
 
     const summary = await getSummary(period)
 
-    return NextResponse.json({ summary }, { status: 200 })
+    const categorySummary = await getSummaryByCategories(period) //HERE
+
+    return NextResponse.json({ summary, categorySummary }, { status: 200 })
   } catch (err) {
     console.log('Error:', err)
 
