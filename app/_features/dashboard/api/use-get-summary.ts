@@ -1,5 +1,6 @@
 'use client'
 
+import { Transaction } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 interface ITransactionsPercentage {
@@ -23,6 +24,7 @@ interface IResponseType {
     transactionPercentages: ITransactionsPercentage
   }
   categorySummary: ICategorySummary[]
+  transactions: Transaction[]
 }
 
 export function useGetSummary(month: string | null) {

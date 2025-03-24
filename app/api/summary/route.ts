@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 
 import { getSummaryByCategories } from '@/app/_actions/categories/get-summary-by-categories'
 import { getSummary } from '@/app/_actions/dashboard/get-summary'
+import { getLastTransactions } from '@/app/_actions/transactions/get-last-transactions'
 import { getMonthRange, getMonthRangeNow } from '@/app/_lib/utils'
 
 export async function GET(request: Request) {
@@ -32,9 +33,14 @@ export async function GET(request: Request) {
 
     const summary = await getSummary(period)
 
-    const categorySummary = await getSummaryByCategories(period) //HERE
+    const categorySummary = await getSummaryByCategories(period)
 
-    return NextResponse.json({ summary, categorySummary }, { status: 200 })
+    const lastTransactions = await getLastTransactions()
+
+    return NextResponse.json(
+      { summary, categorySummary, transactions: lastTransactions },
+      { status: 200 }
+    )
   } catch (err) {
     console.log('Error:', err)
 

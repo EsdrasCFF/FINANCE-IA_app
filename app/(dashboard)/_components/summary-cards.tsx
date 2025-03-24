@@ -6,6 +6,7 @@ import { useQueryState } from 'nuqs'
 import CountUp from 'react-countup'
 
 import { AddTransactionButton } from '@/app/_components/add-transaction-button'
+import { LastTransactions } from '@/app/_components/last-transactions'
 import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
 import { useGetSummary } from '@/app/_features/dashboard/api/use-get-summary'
 import { formatCurrency } from '@/app/_lib/utils'
@@ -54,6 +55,8 @@ export function SummaryCards({ categories }: Props) {
     },
   ]
 
+  const lastTransactions = getSummaryQuery.data?.transactions
+
   return (
     <div className="flex w-full flex-col">
       <div className="flex w-full justify-between py-5">
@@ -61,7 +64,7 @@ export function SummaryCards({ categories }: Props) {
         <TimeSelect setMonth={setMonth} />
       </div>
 
-      <div className="grid grid-cols-[2fr,1fr]">
+      <div className="grid grid-cols-[2fr,1fr] gap-6">
         <div className="space-y-6">
           <Card className="w-full bg-muted">
             <CardHeader className="flex flex-row gap-2">
@@ -111,7 +114,7 @@ export function SummaryCards({ categories }: Props) {
           </div>
         </div>
 
-        <div>Other side</div>
+        <LastTransactions transactions={lastTransactions} />
       </div>
     </div>
   )
