@@ -1,7 +1,7 @@
 'use client'
 
 import { Category } from '@prisma/client'
-import { PiggyBankIcon, TrendingDown, TrendingUp, WalletIcon } from 'lucide-react'
+import { DollarSign, PiggyBankIcon, TrendingDown, TrendingUp, WalletIcon } from 'lucide-react'
 import { useQueryState } from 'nuqs'
 import CountUp from 'react-countup'
 
@@ -36,12 +36,6 @@ export function FinanceOverview({ categories }: Props) {
 
   const cardProps = [
     {
-      icon: <PiggyBankIcon size={16} />,
-      title: 'Investido',
-      amount: result.INVESTMENT,
-      style: 'bg-muted-foreground/40',
-    },
-    {
       icon: <TrendingUp size={16} className="text-customGreen" />,
       title: 'Receitas',
       amount: result.DEPOSIT,
@@ -52,6 +46,18 @@ export function FinanceOverview({ categories }: Props) {
       title: 'Despesas',
       amount: result.EXPENSE,
       style: 'bg-customRed/15',
+    },
+    {
+      icon: <PiggyBankIcon size={16} className="text-indigo-700" />,
+      title: 'Investido',
+      amount: result.INVESTMENT,
+      style: 'bg-indigo-800/40  ',
+    },
+    {
+      icon: <DollarSign size={16} />,
+      title: 'Saldo Mês',
+      amount: result.INVESTMENT,
+      style: 'bg-muted-foreground/40',
     },
   ]
 
@@ -88,7 +94,7 @@ export function FinanceOverview({ categories }: Props) {
             </CardContent>
           </Card>
 
-          <div className="grid h-[138px] grid-cols-3 gap-6">
+          <div className="grid h-[138px] grid-cols-4 gap-6">
             {cardProps.map((inf) => (
               <SummaryCard
                 amount={inf.amount}
@@ -101,7 +107,7 @@ export function FinanceOverview({ categories }: Props) {
           </div>
 
           <div className="flex h-[470px] w-full gap-6">
-            <div className="h-full min-w-[252px]">
+            <div className="h-full min-w-[270px]">
               <TransactionsPieChart
                 expenseTotal={result.EXPENSE}
                 depositTotal={result.DEPOSIT}

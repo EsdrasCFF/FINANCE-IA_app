@@ -21,7 +21,7 @@ export function SummaryCard({ icon, title, amount, style }: SummaryCardProps) {
       </CardHeader>
 
       <CardContent>
-        <p className="text-2xl font-bold">
+        <p className="text-[1.3rem] font-bold">
           <CountUp
             start={0}
             end={amount}

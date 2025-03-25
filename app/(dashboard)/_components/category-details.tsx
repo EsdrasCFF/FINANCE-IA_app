@@ -10,7 +10,7 @@ interface Props {
 
 export function CategoryDetails({ categorySummary }: Props) {
   return (
-    <div className="mb-6 flex w-full flex-col text-sm">
+    <div className="mb-4 flex w-full flex-col text-sm">
       <div className="mb-1 flex justify-between text-sm font-bold">
         <p>{categorySummary.name}</p>
         <span>

@@ -23,11 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body
-          className={`${mulish.className} dark flex min-h-screen w-full flex-col items-center antialiased`}
-        >
+        <body className={`${mulish.className} dark flex w-full flex-col items-center antialiased`}>
           <NavBar />
           <div className="mt-[72px] flex h-full w-full max-w-screen-xl flex-col">{children}</div>
+          <footer className="h-5 w-full"> </footer>
         </body>
       </Providers>
     </html>

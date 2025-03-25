@@ -76,7 +76,7 @@ export function TransactionsPieChart({
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="amount" nameKey="type" innerRadius={65} />
+            <Pie data={chartData} dataKey="amount" nameKey="type" innerRadius={65}></Pie>
           </PieChart>
         </ChartContainer>
       </CardContent>
