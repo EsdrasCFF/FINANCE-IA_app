@@ -28,7 +28,7 @@ export function NavBar() {
   ]
 
   return (
-    <nav className="mx-8 flex h-full max-h-[72px] w-full items-center justify-between border-b px-10 py-4">
+    <nav className="mx-8 flex h-full max-h-[72px] w-full items-center justify-between border-b px-5 py-4">
       {/* LEFT SIDE */}
       <div className="flex items-center gap-12">
         <Link href="/">
