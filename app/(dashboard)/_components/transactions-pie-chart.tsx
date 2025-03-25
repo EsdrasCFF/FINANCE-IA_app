@@ -72,7 +72,7 @@ export function TransactionsPieChart({
 
   return (
     <Card className="flex flex-col">
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1 pt-10">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
