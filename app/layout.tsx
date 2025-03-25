@@ -25,8 +25,7 @@ export default function RootLayout({
       <Providers>
         <body className={`${mulish.className} dark flex w-full flex-col items-center antialiased`}>
           <NavBar />
-          <div className="mt-[72px] flex h-full w-full max-w-screen-xl flex-col">{children}</div>
-          <footer className="h-5 w-full"> </footer>
+          <div className="mt-[72px] flex w-full max-w-screen-xl flex-col">{children}</div>
         </body>
       </Providers>
     </html>

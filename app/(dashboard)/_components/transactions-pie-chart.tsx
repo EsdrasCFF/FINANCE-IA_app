@@ -1,7 +1,7 @@
 'use client'
 
 import { TransactionType } from '@prisma/client'
-import { PiggyBankIcon, TrendingDown, TrendingUp } from 'lucide-react'
+import { Loader2, PiggyBankIcon, TrendingDown, TrendingUp } from 'lucide-react'
 import { Pie, PieChart } from 'recharts'
 
 import { Card, CardContent, CardFooter } from '@/app/_components/ui/card'
@@ -30,6 +30,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 interface TransactionsPieChartProps {
+  isLoading: boolean
   expenseTotal: number
   investmentTotal: number
   depositTotal: number
@@ -45,6 +46,7 @@ export function TransactionsPieChart({
   expenseTotal,
   investmentTotal,
   transactionPercentages,
+  isLoading,
 }: TransactionsPieChartProps) {
   const chartData = [
     { type: TransactionType.DEPOSIT, amount: depositTotal, fill: '#55B02E' },
@@ -73,12 +75,19 @@ export function TransactionsPieChart({
   return (
     <Card className="flex h-full flex-col">
       <CardContent className="flex-1 pt-10">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
-          <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="amount" nameKey="type" innerRadius={65}></Pie>
-          </PieChart>
-        </ChartContainer>
+        {isLoading && (
+          <div className="flex h-full w-full items-center justify-center">
+            <Loader2 className="animate-spin" />
+          </div>
+        )}
+        {!isLoading && (
+          <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
+            <PieChart>
+              <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+              <Pie data={chartData} dataKey="amount" nameKey="type" innerRadius={65}></Pie>
+            </PieChart>
+          </ChartContainer>
+        )}
       </CardContent>
       <CardFooter className="flex-col gap-3 text-sm">
         {pieChartLegendData.map((legendData) => (

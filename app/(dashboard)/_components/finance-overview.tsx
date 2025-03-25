@@ -76,8 +76,10 @@ export function FinanceOverview({ categories }: Props) {
 
   const totalBalance = getSummaryQuery.data?.balance || 0
 
+  const isLoading = getSummaryQuery.isLoading
+
   return (
-    <div className="flex h-[880px] w-full flex-col">
+    <div className="mb-6 flex h-[880px] w-full flex-col">
       <div className="flex h-[80px] w-full items-center justify-between py-5">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <TimeSelect setMonth={setMonth} month={month} />
@@ -139,6 +141,7 @@ export function FinanceOverview({ categories }: Props) {
                 depositTotal={result.DEPOSIT}
                 investmentTotal={result.INVESTMENT}
                 transactionPercentages={result.transactionPercentages}
+                isLoading={isLoading}
               />
             </div>
 
