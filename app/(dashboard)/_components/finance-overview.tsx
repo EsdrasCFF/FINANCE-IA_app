@@ -1,8 +1,17 @@
 'use client'
 
 import { Category } from '@prisma/client'
-import { DollarSign, PiggyBankIcon, TrendingDown, TrendingUp, WalletIcon } from 'lucide-react'
+import {
+  DollarSign,
+  Eye,
+  EyeOff,
+  PiggyBankIcon,
+  TrendingDown,
+  TrendingUp,
+  WalletIcon,
+} from 'lucide-react'
 import { useQueryState } from 'nuqs'
+import { useState } from 'react'
 import CountUp from 'react-countup'
 
 import { AddTransactionButton } from '@/app/_components/add-transaction-button'
@@ -22,6 +31,8 @@ interface Props {
 
 export function FinanceOverview({ categories }: Props) {
   const [month, setMonth] = useQueryState('month')
+
+  const [isViewBalance, setIsViewBalance] = useState(false)
 
   const getSummaryQuery = useGetSummary(month)
 
@@ -56,18 +67,20 @@ export function FinanceOverview({ categories }: Props) {
     {
       icon: <DollarSign size={16} />,
       title: 'Saldo Mês',
-      amount: result.INVESTMENT,
+      amount: result.DEPOSIT - (result.EXPENSE + result.INVESTMENT),
       style: 'bg-muted-foreground/40',
     },
   ]
 
   const lastTransactions = getSummaryQuery.data?.transactions
 
+  const totalBalance = getSummaryQuery.data?.balance || 0
+
   return (
     <div className="flex h-[880px] w-full flex-col">
       <div className="flex h-[80px] w-full items-center justify-between py-5">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <TimeSelect setMonth={setMonth} />
+        <TimeSelect setMonth={setMonth} month={month} />
       </div>
       {/* grid max-h-[500px] min-h-[500px] flex-1 grid-cols-[2fr,1fr] gap-6 */}
       <div className="flex h-[800px] max-h-[800px] min-h-[800px] w-full gap-6">
@@ -77,19 +90,32 @@ export function FinanceOverview({ categories }: Props) {
               <div className="w-fit rounded-md bg-background p-2">
                 <WalletIcon size={16} />
               </div>
-              <p className="text-muted-foreground">Saldo</p>
+              <p className="text-muted-foreground">Saldo Atual</p>
             </CardHeader>
 
             <CardContent className="flex w-full justify-between">
-              <p className="text-4xl font-bold">
-                <CountUp
-                  start={0}
-                  end={result.DEPOSIT - (result.EXPENSE + result.INVESTMENT)}
-                  formattingFn={formatCurrency}
-                  decimals={2}
-                  decimalPlaces={2}
-                />
-              </p>
+              <div className="flex items-center gap-5">
+                {isViewBalance ? (
+                  <p className="text-4xl font-bold">
+                    <CountUp
+                      start={0}
+                      end={totalBalance}
+                      formattingFn={formatCurrency}
+                      decimals={2}
+                      decimalPlaces={2}
+                    />
+                  </p>
+                ) : (
+                  <div className="flex min-h-[40px] min-w-[210px] max-w-[210px] items-center justify-center rounded-md bg-muted-foreground/20" />
+                )}
+
+                <button
+                  className="h-[40px] w-fit rounded-md"
+                  onClick={() => setIsViewBalance(!isViewBalance)}
+                >
+                  {isViewBalance ? <Eye size={30} /> : <EyeOff size={30} />}
+                </button>
+              </div>
               <AddTransactionButton categories={categories} />
             </CardContent>
           </Card>

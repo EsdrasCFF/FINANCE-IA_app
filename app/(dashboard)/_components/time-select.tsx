@@ -20,12 +20,13 @@ interface Props {
     value: string | ((old: string | null) => string | null) | null,
     options?: Options | undefined
   ) => Promise<URLSearchParams>
+  month: string | null
 }
 
-export function TimeSelect({ setMonth }: Props) {
+export function TimeSelect({ setMonth, month }: Props) {
   const today = new Date()
 
-  const [selectedMonth, setSelectedMonth] = useState<string>(format(today, 'yyyy-MM'))
+  const [selectedMonth, setSelectedMonth] = useState<string>(month ?? format(today, 'yyyy-MM'))
 
   const distanceInMonths = differenceInMonths(selectedMonth, today)
 
