@@ -15,10 +15,10 @@ import { useState } from 'react'
 import CountUp from 'react-countup'
 
 import { AddTransactionButton } from '@/app/_components/add-transaction-button'
-import { LastTransactions } from '@/app/_components/last-transactions'
 import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
 import { useGetSummary } from '@/app/_features/dashboard/api/use-get-summary'
 import { formatCurrency } from '@/app/_lib/utils'
+import { LastTransactions } from '@/app/(dashboard)/_components/last-transactions'
 
 import { ExpensesPerCategory } from './expenses-per-category'
 import { SummaryCard } from './summary-card'

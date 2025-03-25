@@ -2,6 +2,7 @@ import { Transaction } from '@prisma/client'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Atom, Banknote, Barcode, Bitcoin, CreditCard, RefreshCw } from 'lucide-react'
+import CountUp from 'react-countup'
 import { tv } from 'tailwind-variants'
 
 import { formatCurrency } from '../_lib/utils'
@@ -17,7 +18,7 @@ export function TransactionDetails({ transaction }: TransactionDetailsProps) {
       type: {
         DEPOSIT: 'text-[#39BE00]',
         EXPENSE: 'text-[#E93030]',
-        INVESTMENT: 'text-white',
+        INVESTMENT: 'text-indigo-500',
       },
     },
   })
@@ -50,7 +51,9 @@ export function TransactionDetails({ transaction }: TransactionDetailsProps) {
       <div className="font-bold">
         <p className={textColor({ type: transaction.type })}>
           {transaction.type == 'DEPOSIT' ? '+' : '-'}
-          <span>{formatCurrency(transaction.amount)}</span>
+          <span>
+            <CountUp start={0} end={transaction.amount} formattingFn={formatCurrency} />
+          </span>
         </p>
       </div>
     </div>

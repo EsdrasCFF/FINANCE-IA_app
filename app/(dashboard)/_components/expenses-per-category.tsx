@@ -26,7 +26,7 @@ export function ExpensesPerCategory({ categorySummary }: Props) {
         <CardContent className="flex h-full w-full flex-col">
           {/* <Separator className="mb-6" /> */}
           {!categorySummary && (
-            <div className="flex h-full w-full items-center justify-center">
+            <div className="mt-32 flex h-full w-full items-center justify-center">
               <Loader2 className="animate-spin" />
             </div>
           )}

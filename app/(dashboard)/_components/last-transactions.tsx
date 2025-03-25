@@ -4,11 +4,11 @@ import { Transaction } from '@prisma/client'
 import { Loader2 } from 'lucide-react'
 import Link from 'next/link'
 
-import { TransactionDetails } from './transaction-details'
-import { Button } from './ui/button'
-import { CardContent, CardHeader, CardTitle } from './ui/card'
-import { ScrollArea } from './ui/scroll-area'
-import { Separator } from './ui/separator'
+import { TransactionDetails } from '../../_components/transaction-details'
+import { Button } from '../../_components/ui/button'
+import { CardContent, CardHeader, CardTitle } from '../../_components/ui/card'
+import { ScrollArea } from '../../_components/ui/scroll-area'
+import { Separator } from '../../_components/ui/separator'
 
 interface Props {
   transactions: Transaction[] | undefined
@@ -31,7 +31,7 @@ export function LastTransactions({ transactions }: Props) {
       <ScrollArea className="h-full max-h-[880px] overflow-hidden pb-5">
         <CardContent className="w-full">
           {!transactions && (
-            <div className="h-full w-full">
+            <div className="mt-96 flex h-full w-full items-center justify-center">
               <Loader2 className="animate-spin" />
             </div>
           )}
