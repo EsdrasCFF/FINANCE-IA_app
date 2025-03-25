@@ -1,9 +1,8 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
-import { NavBar } from '../_components/nav-bar'
 import { db } from '../_lib/prisma'
-import { SummaryCards } from './_components/summary-cards'
+import { FinanceOverview } from './_components/finance-overview'
 
 export default async function Home() {
   const { userId } = await auth()
@@ -15,12 +14,8 @@ export default async function Home() {
   const categories = await db.category.findMany({ where: { userId } })
 
   return (
-    <>
-      <NavBar />
-
-      <div className="flex w-full px-6">
-        <SummaryCards categories={categories} />
-      </div>
-    </>
+    <div className="flex w-full px-6 pb-6" style={{ maxHeight: 'calc(100vh - 72px)' }}>
+      <FinanceOverview categories={categories} />
+    </div>
   )
 }
