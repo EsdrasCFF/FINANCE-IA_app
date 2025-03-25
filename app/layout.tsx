@@ -1,11 +1,9 @@
 import './globals.css'
 
-import { ClerkProvider } from '@clerk/nextjs'
-import { dark } from '@clerk/themes'
 import type { Metadata } from 'next'
 import { Mulish } from 'next/font/google'
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
+import { NavBar } from './_components/nav-bar'
 import { Providers } from './_providers'
 
 const mulish = Mulish({
@@ -24,13 +22,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ClerkProvider appearance={{ baseTheme: dark }}>
-        <Providers>
-          <body className={`${mulish.className} dark flex flex-col antialiased`}>
-            <NuqsAdapter> {children} </NuqsAdapter>
-          </body>
-        </Providers>
-      </ClerkProvider>
+      <Providers>
+        <body
+          className={`${mulish.className} dark mb-5 flex max-h-screen min-h-screen w-full flex-col items-center antialiased`}
+        >
+          <NavBar />
+          <div
+            className="flex h-full w-full max-w-screen-xl flex-col"
+            style={{ minHeight: 'calc(100vh - 72px)' }}
+          >
+            {children}
+          </div>
+        </body>
+      </Providers>
     </html>
   )
 }

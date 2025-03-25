@@ -1,6 +1,9 @@
 'use client'
 
+import { ClerkProvider } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { ReactNode } from 'react'
 
 interface Props {
@@ -11,7 +14,11 @@ export function Providers({ children }: Props) {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <ClerkProvider appearance={{ baseTheme: dark }}>
+        <QueryClientProvider client={queryClient}>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </QueryClientProvider>
+      </ClerkProvider>
     </>
   )
 }
