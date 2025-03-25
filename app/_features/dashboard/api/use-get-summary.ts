@@ -25,6 +25,7 @@ interface IResponseType {
   }
   categorySummary: ICategorySummary[]
   transactions: Transaction[]
+  balance: number
 }
 
 export function useGetSummary(month: string | null) {
