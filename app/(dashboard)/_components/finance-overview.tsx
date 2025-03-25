@@ -20,7 +20,7 @@ interface Props {
   categories: Category[]
 }
 
-export function SummaryCards({ categories }: Props) {
+export function FinanceOverview({ categories }: Props) {
   const [month, setMonth] = useQueryState('month')
 
   const getSummaryQuery = useGetSummary(month)
@@ -58,14 +58,14 @@ export function SummaryCards({ categories }: Props) {
   const lastTransactions = getSummaryQuery.data?.transactions
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <div className="flex w-full justify-between py-5">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <TimeSelect setMonth={setMonth} />
       </div>
 
-      <div className="grid grid-cols-[2fr,1fr] gap-6">
-        <div className="space-y-6">
+      <div className="grid h-full max-h-full min-h-full grid-cols-[2fr,1fr] gap-6">
+        <div className="flex h-full min-h-full flex-col gap-6">
           <Card className="w-full bg-muted">
             <CardHeader className="flex flex-row gap-2">
               <div className="w-fit rounded-md bg-background p-2">
@@ -100,7 +100,7 @@ export function SummaryCards({ categories }: Props) {
             ))}
           </div>
 
-          <div className="grid h-full max-h-[400px] grid-cols-3 gap-6">
+          <div className="grid h-full grid-cols-3 gap-6">
             <TransactionsPieChart
               expenseTotal={result.EXPENSE}
               depositTotal={result.DEPOSIT}
@@ -108,13 +108,15 @@ export function SummaryCards({ categories }: Props) {
               transactionPercentages={result.transactionPercentages}
             />
 
-            <div className="col-span-2">
+            <Card className="col-span-2 h-full overflow-hidden">
               <ExpensesPerCategory categorySummary={categoriesSummary} />
-            </div>
+            </Card>
           </div>
         </div>
 
-        <LastTransactions transactions={lastTransactions} />
+        <Card className="h-full min-h-full rounded-lg">
+          <LastTransactions transactions={lastTransactions} />
+        </Card>
       </div>
     </div>
   )

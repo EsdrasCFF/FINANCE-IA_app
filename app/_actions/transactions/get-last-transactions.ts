@@ -19,7 +19,7 @@ export async function getLastTransactions() {
     orderBy: {
       date: 'desc',
     },
-    take: 12,
+    take: 20,
   })
 
   const convertAmount = transactions.map((transaction) => ({
