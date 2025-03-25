@@ -2,13 +2,11 @@
 
 import { Transaction } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
-import { TrashIcon } from 'lucide-react'
 
-import { EditTransactionButton } from '../_components/edit-transaction-button'
 import { Badge } from '../_components/ui/badge'
-import { Button } from '../_components/ui/button'
 import { PAYMENT_METHOD_LABELS } from '../_constants/transactions'
 import { formatCurrency, formatDateToCompleteLabel } from '../_lib/utils'
+import { ActionsControl } from './_components/actions-control'
 import { TransactionTypeBadge } from './_components/type-bagde'
 
 export interface TransactionWithCategoryProps extends Transaction {
@@ -52,21 +50,12 @@ export const transactionsColumns: ColumnDef<TransactionWithCategoryProps>[] = [
     cell: (data) => formatCurrency(data.row.original.amount),
   },
   {
-    accessorKey: 'actions',
-    header: '',
+    id: 'actions',
+    enableHiding: false,
     cell: (data) => {
-      return (
-        <div className="flex gap-1">
-          <EditTransactionButton
-            transaction={data.row.original as TransactionWithCategoryProps}
-            key={data.row.original.id}
-          />
+      const id = data.row.original.id
 
-          <Button variant="ghost" className="size-6">
-            <TrashIcon />
-          </Button>
-        </div>
-      )
+      return <ActionsControl id={id} />
     },
   },
 ]
