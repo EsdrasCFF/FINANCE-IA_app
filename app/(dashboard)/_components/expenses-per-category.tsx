@@ -22,7 +22,7 @@ export function ExpensesPerCategory({ categorySummary }: Props) {
         <Separator />
       </div>
 
-      <ScrollArea className="h-full max-h-[450px] w-full">
+      <ScrollArea className="h-full w-full pb-4">
         <CardContent className="flex h-full w-full flex-col">
           {/* <Separator className="mb-6" /> */}
           {!categorySummary && (

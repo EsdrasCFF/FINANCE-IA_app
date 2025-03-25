@@ -28,7 +28,7 @@ export function LastTransactions({ transactions }: Props) {
       <div className="mb-6 px-6">
         <Separator />
       </div>
-      <ScrollArea className="h-full max-h-[880px] overflow-hidden">
+      <ScrollArea className="h-full max-h-[880px] overflow-hidden pb-5">
         <CardContent className="w-full">
           {!transactions && (
             <div className="h-full w-full">

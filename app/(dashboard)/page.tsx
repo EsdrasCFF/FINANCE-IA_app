@@ -14,7 +14,7 @@ export default async function Home() {
   const categories = await db.category.findMany({ where: { userId } })
 
   return (
-    <div className="flex w-full px-6 pb-6" style={{ maxHeight: 'calc(100vh - 72px)' }}>
+    <div className="flex h-full w-full px-6 pb-6">
       <FinanceOverview categories={categories} />
     </div>
   )

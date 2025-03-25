@@ -58,15 +58,15 @@ export function FinanceOverview({ categories }: Props) {
   const lastTransactions = getSummaryQuery.data?.transactions
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <div className="flex w-full justify-between py-5">
+    <div className="flex h-[880px] w-full flex-col">
+      <div className="flex h-[80px] w-full items-center justify-between py-5">
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <TimeSelect setMonth={setMonth} />
       </div>
-
-      <div className="grid h-full max-h-full min-h-full grid-cols-[2fr,1fr] gap-6">
-        <div className="flex h-full min-h-full flex-col gap-6">
-          <Card className="w-full bg-muted">
+      {/* grid max-h-[500px] min-h-[500px] flex-1 grid-cols-[2fr,1fr] gap-6 */}
+      <div className="flex h-[800px] max-h-[800px] min-h-[800px] w-full gap-6">
+        <div className="flex w-full flex-col gap-6">
+          <Card className="h-[146px] w-full bg-muted">
             <CardHeader className="flex flex-row gap-2">
               <div className="w-fit rounded-md bg-background p-2">
                 <WalletIcon size={16} />
@@ -88,7 +88,7 @@ export function FinanceOverview({ categories }: Props) {
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid h-[138px] grid-cols-3 gap-6">
             {cardProps.map((inf) => (
               <SummaryCard
                 amount={inf.amount}
@@ -100,21 +100,23 @@ export function FinanceOverview({ categories }: Props) {
             ))}
           </div>
 
-          <div className="grid h-full grid-cols-3 gap-6">
-            <TransactionsPieChart
-              expenseTotal={result.EXPENSE}
-              depositTotal={result.DEPOSIT}
-              investmentTotal={result.INVESTMENT}
-              transactionPercentages={result.transactionPercentages}
-            />
+          <div className="flex h-[470px] w-full gap-6">
+            <div className="h-full min-w-[252px]">
+              <TransactionsPieChart
+                expenseTotal={result.EXPENSE}
+                depositTotal={result.DEPOSIT}
+                investmentTotal={result.INVESTMENT}
+                transactionPercentages={result.transactionPercentages}
+              />
+            </div>
 
-            <Card className="col-span-2 h-full overflow-hidden">
+            <Card className="h-full w-full overflow-hidden">
               <ExpensesPerCategory categorySummary={categoriesSummary} />
             </Card>
           </div>
         </div>
 
-        <Card className="h-full min-h-full rounded-lg">
+        <Card className="h-full min-w-[400px] rounded-lg">
           <LastTransactions transactions={lastTransactions} />
         </Card>
       </div>

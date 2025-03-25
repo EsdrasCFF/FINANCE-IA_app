@@ -24,15 +24,10 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body
-          className={`${mulish.className} dark mb-5 flex max-h-screen min-h-screen w-full flex-col items-center antialiased`}
+          className={`${mulish.className} dark flex min-h-screen w-full flex-col items-center antialiased`}
         >
           <NavBar />
-          <div
-            className="flex h-full w-full max-w-screen-xl flex-col"
-            style={{ minHeight: 'calc(100vh - 72px)' }}
-          >
-            {children}
-          </div>
+          <div className="mt-[72px] flex h-full w-full max-w-screen-xl flex-col">{children}</div>
         </body>
       </Providers>
     </html>
