@@ -8,11 +8,7 @@ import { EditTransactionButton } from '../_components/edit-transaction-button'
 import { Badge } from '../_components/ui/badge'
 import { Button } from '../_components/ui/button'
 import { PAYMENT_METHOD_LABELS } from '../_constants/transactions'
-import {
-  convertFromHundredUnitsToAmount,
-  formatCurrency,
-  formatDateToCompleteLabel,
-} from '../_lib/utils'
+import { formatCurrency, formatDateToCompleteLabel } from '../_lib/utils'
 import { TransactionTypeBadge } from './_components/type-bagde'
 
 export interface TransactionWithCategoryProps extends Transaction {
@@ -53,7 +49,7 @@ export const transactionsColumns: ColumnDef<TransactionWithCategoryProps>[] = [
   {
     accessorKey: 'amount',
     header: 'Valor',
-    cell: (data) => formatCurrency(convertFromHundredUnitsToAmount(data.row.original.amount)),
+    cell: (data) => formatCurrency(data.row.original.amount),
   },
   {
     accessorKey: 'actions',
