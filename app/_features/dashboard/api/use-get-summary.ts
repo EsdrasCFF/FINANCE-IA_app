@@ -29,8 +29,10 @@ interface IResponseType {
 }
 
 export function useGetSummary(month: string | null) {
+  const key = month || 'default'
+
   const query = useQuery<IResponseType>({
-    queryKey: ['summary', month],
+    queryKey: ['summary', key],
     queryFn: async () => {
       const response = await fetch(`/api/summary?month=${month}`)
 

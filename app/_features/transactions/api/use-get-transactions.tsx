@@ -12,8 +12,10 @@ interface IResponseType {
 }
 
 export function useGetTransactions(month: string | null) {
+  const key = month || 'default'
+
   const query = useQuery<IResponseType>({
-    queryKey: ['transactions', month],
+    queryKey: ['transactions', key],
     queryFn: async () => {
       const response = await fetch(`/api/transactions?month=${month}`)
 
