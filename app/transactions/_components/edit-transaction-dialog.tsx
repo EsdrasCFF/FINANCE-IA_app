@@ -1,3 +1,5 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Category, PaymentMethod, TransactionType } from '@prisma/client'
 import { Loader2 } from 'lucide-react'
