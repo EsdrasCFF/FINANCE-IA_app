@@ -7,12 +7,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu'
+import { useEditTransactionStore } from '@/app/_features/transactions/hooks/use-edit-transaction-store'
 
 interface ActionsControlProps {
   id: string
 }
 
-export function ActionsControl({}: ActionsControlProps) {
+export function ActionsControl({ id }: ActionsControlProps) {
+  const { onOpen } = useEditTransactionStore()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,7 +28,7 @@ export function ActionsControl({}: ActionsControlProps) {
         <DropdownMenuItem className="hover:cursor-pointer">
           <TrashIcon className="mr-3" /> Deletar
         </DropdownMenuItem>
-        <DropdownMenuItem className="hover:cursor-pointer">
+        <DropdownMenuItem className="hover:cursor-pointer" onClick={() => onOpen(id)}>
           <PencilIcon className="mr-3" /> Editar
         </DropdownMenuItem>
       </DropdownMenuContent>
