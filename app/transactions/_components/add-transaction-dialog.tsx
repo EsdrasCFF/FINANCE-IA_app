@@ -1,10 +1,11 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Category, PaymentMethod, TransactionType } from '@prisma/client'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { toast } from 'sonner'
 
-import { addTransaction } from '@/app/_actions/transactions/add-transactions'
 import { MoneyInput } from '@/app/_components/money-input'
 import { Button } from '@/app/_components/ui/button'
 import { DatePicker } from '@/app/_components/ui/date-picker'
@@ -33,31 +34,20 @@ import {
   SelectValue,
 } from '@/app/_components/ui/select'
 import { PAYMENT_METHOD_OPTIONS, TRANSACTION_TYPE_OPTIONS } from '@/app/_constants/transactions'
+import { useAddTransaction } from '@/app/_features/transactions/api/use-add-transaction'
 import { useAddTransactionStore } from '@/app/_stores/add-transaction-store'
-
-export const addTransactionFormSchema = z.object({
-  name: z.string().trim().min(3, { message: 'O nome é obrigatório!' }),
-  amount: z
-    .number({ required_error: 'Valor é obrigatório!' })
-    .positive({ message: 'O valor precisa ser positivo' }),
-  type: z.nativeEnum(TransactionType),
-  category: z.string({ required_error: '' }).trim().min(3, { message: 'Categoria é obrigatório!' }),
-  paymentMethod: z.nativeEnum(PaymentMethod, {
-    required_error: 'Método de pagamento é obrigatório',
-  }),
-  date: z.date({
-    required_error: 'Data é obrigatória!',
-  }),
-})
-
-type FormSchemaData = z.infer<typeof addTransactionFormSchema>
+import { useQueryParamsStore } from '@/app/_stores/use-query-params-store'
+import {
+  addTransactionFormSchema,
+  TransactionFormData,
+} from '@/app/_validation/transactions/add-transaction-validator'
 
 interface AddTransactionsDialogProps {
   categories: Category[]
 }
 
 export function AddTransactionDialog({ categories }: AddTransactionsDialogProps) {
-  const form = useForm<FormSchemaData>({
+  const form = useForm<TransactionFormData>({
     resolver: zodResolver(addTransactionFormSchema),
     defaultValues: {
       date: new Date(),
@@ -69,6 +59,10 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
 
   const { onClose, isOpen } = useAddTransactionStore()
 
+  const { month } = useQueryParamsStore()
+
+  const addTransactionMutate = useAddTransaction(month)
+
   const selectedTransactionType = form.watch('type')
 
   const filteredCategories = categories.filter(
@@ -77,14 +71,16 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
 
   const isSubmitting = form.formState.isSubmitting
 
-  async function handleSubmitForm(data: FormSchemaData) {
-    try {
-      await addTransaction(data)
-      onClose()
-      form.reset()
-    } catch (err) {
-      console.error('An error occurred while creating the transaction in the database:', err)
-    }
+  console.log(addTransactionMutate.isPending)
+
+  async function handleSubmitForm(data: TransactionFormData) {
+    addTransactionMutate.mutate(data, {
+      onSuccess: () => {
+        onClose()
+        form.reset()
+        toast.success('Transação criada com sucesso!')
+      },
+    })
   }
 
   function onCloseDialog() {
@@ -108,6 +104,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmitForm)} className="space-y-5">
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="name"
               render={({ field }) => (
@@ -122,6 +119,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="amount"
               render={({ field }) => (
@@ -141,6 +139,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="type"
               render={({ field }) => (
@@ -167,6 +166,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="category"
               render={({ field }) => (
@@ -197,6 +197,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="paymentMethod"
               render={({ field }) => (
@@ -223,6 +224,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="date"
               render={({ field }) => (
@@ -245,7 +247,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
                 Cancelar
               </Button>
 
-              <Button variant="default" disabled={isSubmitting}>
+              <Button variant="default" type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="ml-2 animate-spin" />} Adicionar
               </Button>
             </DialogFooter>
