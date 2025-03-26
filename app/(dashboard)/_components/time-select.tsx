@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from '@/app/_components/ui/select'
 import { generateMonths } from '@/app/_lib/utils'
+import { useQueryParamsStore } from '@/app/_stores/use-query-params-store'
 
 interface Props {
   setMonth: (
@@ -32,10 +33,13 @@ export function TimeSelect({ setMonth, month }: Props) {
 
   const [months, setMonths] = useState(generateMonths(distanceInMonths))
 
+  const { setNewMonth } = useQueryParamsStore()
+
   function handleSelectValueChange(value: string) {
     setSelectedMonth(value)
     setMonth(value)
     setMonths(generateMonths(distanceInMonths))
+    setNewMonth(value)
   }
 
   return (
