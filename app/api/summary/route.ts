@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { getSummaryByCategories } from '@/app/_actions/categories/get-summary-by-categories'
 import { getSummary } from '@/app/_actions/dashboard/get-summary'
 import { getTotalBalance } from '@/app/_actions/dashboard/get-total-balance'
-import { getLastTransactions } from '@/app/_actions/transactions/get-last-transactions'
+import { getLastTransactions } from '@/app/_features/transactions/actions/get-last-transactions'
 import { getMonthRange, getMonthRangeNow } from '@/app/_lib/utils'
 
 export async function GET(request: Request) {
