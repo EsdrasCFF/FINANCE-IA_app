@@ -7,6 +7,7 @@ import { Mulish } from 'next/font/google'
 
 import { NavBar } from './_components/nav-bar'
 import { Providers } from './_providers'
+import { DialogProvider } from './_providers/dialog-provider'
 
 const mulish = Mulish({
   subsets: ['latin-ext'],
@@ -31,6 +32,7 @@ export default function RootLayout({
           <Providers>
             <NavBar />
             <div className="mt-[72px] flex w-full max-w-screen-xl flex-col">{children}</div>
+            <DialogProvider />
           </Providers>
         </body>
       </ClerkProvider>
