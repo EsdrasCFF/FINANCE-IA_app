@@ -69,9 +69,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
     (category) => category.type == selectedTransactionType
   )
 
-  const isSubmitting = form.formState.isSubmitting
-
-  console.log(addTransactionMutate.isPending)
+  const isLoading = form.formState.isSubmitting || addTransactionMutate.isPending
 
   async function handleSubmitForm(data: TransactionFormData) {
     addTransactionMutate.mutate(data, {
@@ -104,7 +102,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmitForm)} className="space-y-5">
             <FormField
-              disabled={isSubmitting}
+              disabled={isLoading}
               control={form.control}
               name="name"
               render={({ field }) => (
@@ -119,7 +117,6 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
-              disabled={isSubmitting}
               control={form.control}
               name="amount"
               render={({ field }) => (
@@ -127,6 +124,7 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
                   <FormLabel>Valor</FormLabel>
                   <FormControl>
                     <MoneyInput
+                      disabled={isLoading}
                       placeholder="Digite o valor..."
                       onValueChange={({ floatValue }) => field.onChange(floatValue)}
                       value={field.value}
@@ -139,13 +137,16 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
-              disabled={isSubmitting}
               control={form.control}
               name="type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tipo</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoading}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione um tipo de Transação" />
@@ -166,13 +167,12 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
-              disabled={isSubmitting}
               control={form.control}
               name="category"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoria</FormLabel>
-                  <Select onValueChange={field.onChange}>
+                  <Select onValueChange={field.onChange} disabled={isLoading}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
@@ -197,13 +197,16 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
-              disabled={isSubmitting}
               control={form.control}
               name="paymentMethod"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>método de Pagamento</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoading}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione um método de pagamento" />
@@ -224,13 +227,12 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <FormField
-              disabled={isSubmitting}
               control={form.control}
               name="date"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Data</FormLabel>
-                  <DatePicker value={field.value} onChange={field.onChange} />
+                  <DatePicker value={field.value} onChange={field.onChange} disabled={isLoading} />
 
                   <FormMessage />
                 </FormItem>
@@ -238,17 +240,12 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
             />
 
             <DialogFooter>
-              <Button
-                variant="outline"
-                type="button"
-                disabled={isSubmitting}
-                onClick={onCancelForm}
-              >
+              <Button variant="outline" type="button" disabled={isLoading} onClick={onCancelForm}>
                 Cancelar
               </Button>
 
-              <Button variant="default" type="submit" disabled={isSubmitting}>
-                {isSubmitting && <Loader2 className="ml-2 animate-spin" />} Adicionar
+              <Button variant="default" type="submit" disabled={isLoading}>
+                {isLoading && <Loader2 className="ml-2 animate-spin" />} Adicionar
               </Button>
             </DialogFooter>
           </form>

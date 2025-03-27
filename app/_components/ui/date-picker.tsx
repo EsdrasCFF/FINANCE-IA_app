@@ -15,14 +15,15 @@ import { Popover, PopoverContent, PopoverTrigger } from './popover'
 interface DatePickerProps {
   value?: Date
   onChange?: SelectSingleEventHandler
+  disabled?: boolean
 }
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
+export function DatePicker({ value, disabled, onChange }: DatePickerProps) {
   // const [date, setDate] = React.useState<Date>()
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild disabled={!!disabled}>
         <Button
           variant={'outline'}
           className={cn(
