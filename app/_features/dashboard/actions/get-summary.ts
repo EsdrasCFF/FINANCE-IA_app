@@ -1,18 +1,11 @@
 'use server'
 
-import { auth } from '@clerk/nextjs/server'
 import { Prisma, TransactionType } from '@prisma/client'
 
 import { db } from '@/app/_lib/prisma'
 import { convertFromHundredUnitsToAmount } from '@/app/_lib/utils'
 
-export async function getSummary(month: { firstDay: string; lastDay: string }) {
-  const { userId } = await auth()
-
-  if (!userId) {
-    throw new Error('Unauthorized')
-  }
-
+export async function getSummary(month: { firstDay: string; lastDay: string }, userId: string) {
   const query = Prisma.sql`
     SELECT type, SUM(COALESCE(amount, 0)) as total
     FROM "transactions"
