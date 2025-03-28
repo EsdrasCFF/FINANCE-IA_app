@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Category } from '@prisma/client'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { MoneyInput } from '@/app/_components/money-input'
 import { Button } from '@/app/_components/ui/button'
@@ -25,12 +26,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/app/_components/ui/select'
-import { PAYMENT_METHOD_OPTIONS,TRANSACTION_TYPE_OPTIONS } from '@/app/_constants/transactions'
+import { PAYMENT_METHOD_OPTIONS, TRANSACTION_TYPE_OPTIONS } from '@/app/_constants/transactions'
 import {
   EditTransactionFormData,
   editTransactionFormSchema,
 } from '@/app/_validation/transactions/edit-transaction-validator'
 
+import { useEditTransaction } from '../api/use-edit-transaction'
 import { TransactionWithCategory } from '../api/use-get-transaction'
 import { useEditTransactionStore } from '../hooks/use-edit-transaction-store'
 
@@ -52,25 +54,26 @@ export function EditTransactionForm({
 
   const { onClose } = useEditTransactionStore()
 
+  const editTransactionMutation = useEditTransaction(transactionData.id)
+
   const filteredCategories = categories.filter((category) => category.type == transactionData.type)
 
-  const isSubmitting = form.formState.isSubmitting
+  const isLoading = form.formState.isSubmitting || editTransactionMutation.isPending
 
   function onCancelForm() {
     form.reset()
     onClose()
   }
 
-  async function handleSubmitForm(data: EditTransactionFormData) {
-    console.log(data)
-    //   try {
-    //     await editTransaction({ ...data, transactionId: transaction.id })
-    //     onClose()
-    //     form.reset()
-    //   } catch (err) {
-    //     console.error('An error occurred while updating the transaction in the database:', err)
-    //   }
+  function handleSubmitForm(data: EditTransactionFormData) {
+    editTransactionMutation.mutate(data, {
+      onSuccess: () => {
+        toast.success('Transação editada com sucesso!')
+        onCancelForm()
+      },
+    })
   }
+
   return (
     <>
       <Form {...form}>
@@ -82,7 +85,7 @@ export function EditTransactionForm({
               <FormItem>
                 <FormLabel>Título</FormLabel>
                 <FormControl>
-                  <Input placeholder="Digite o título..." {...field} />
+                  <Input placeholder="Digite o título..." {...field} disabled={isLoading} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -101,6 +104,7 @@ export function EditTransactionForm({
                     onValueChange={({ floatValue }) => field.onChange(floatValue)}
                     value={field.value}
                     onBlur={field.onBlur}
+                    disabled={isLoading}
                   />
                 </FormControl>
                 <FormMessage />
@@ -143,6 +147,7 @@ export function EditTransactionForm({
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={transactionData.categoryId || undefined}
+                  disabled={isLoading}
                 >
                   <FormControl>
                     <SelectTrigger>
@@ -173,7 +178,11 @@ export function EditTransactionForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>método de Pagamento</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isLoading}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione um método de pagamento" />
@@ -199,7 +208,7 @@ export function EditTransactionForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Data</FormLabel>
-                <DatePicker value={field.value} onChange={field.onChange} />
+                <DatePicker value={field.value} onChange={field.onChange} disabled={isLoading} />
 
                 <FormMessage />
               </FormItem>
@@ -207,12 +216,12 @@ export function EditTransactionForm({
           />
 
           <DialogFooter>
-            <Button variant="outline" type="button" disabled={isSubmitting} onClick={onCancelForm}>
+            <Button variant="outline" type="button" disabled={isLoading} onClick={onCancelForm}>
               Cancelar
             </Button>
 
-            <Button variant="default" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="ml-2 animate-spin" />} Atualizar
+            <Button variant="default" disabled={isLoading}>
+              {isLoading && <Loader2 className="ml-2 animate-spin" />} Atualizar
             </Button>
           </DialogFooter>
         </form>
