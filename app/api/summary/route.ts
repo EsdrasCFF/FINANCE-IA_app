@@ -2,9 +2,9 @@ import { auth } from '@clerk/nextjs/server'
 import { isMatch } from 'date-fns'
 import { NextResponse } from 'next/server'
 
-import { getTotalBalance } from '@/app/_actions/dashboard/get-total-balance'
 import { getSummary } from '@/app/_features/dashboard/actions/get-summary'
 import { getSummaryByCategories } from '@/app/_features/dashboard/actions/get-summary-by-categories'
+import { getTotalBalance } from '@/app/_features/dashboard/actions/get-total-balance'
 import { getLastTransactions } from '@/app/_features/transactions/actions/get-last-transactions'
 import { getMonthRange, getMonthRangeNow } from '@/app/_lib/utils'
 
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 
     const summary = await getSummary(period, userId)
 
-    const actualBalance = await getTotalBalance()
+    const actualBalance = await getTotalBalance(userId)
 
     const categorySummary = await getSummaryByCategories(period, userId)
 
