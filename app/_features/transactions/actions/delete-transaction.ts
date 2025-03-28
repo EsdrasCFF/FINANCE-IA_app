@@ -10,5 +10,7 @@ export async function deleteTransaction(transactionId: string, userId: string) {
     },
   })
 
+  console.log({ deleteTransaction })
+
   return deletedTransaction
 }

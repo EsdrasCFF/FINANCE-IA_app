@@ -2,6 +2,7 @@
 
 'use client'
 
+import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/app/_components/ui/button'
@@ -16,8 +17,9 @@ import {
 
 export function useConfirm(
   title: string,
-  message: string
-): [() => JSX.Element, () => Promise<unknown>] {
+  message: string,
+  isLoading?: boolean
+): [() => JSX.Element, () => Promise<unknown>, () => void] {
   const [promise, setPromise] = useState<{ resolve: (value: boolean) => void } | null>(null)
 
   const confirm = () =>
@@ -31,7 +33,7 @@ export function useConfirm(
 
   const handleConfirm = () => {
     promise?.resolve(true)
-    handleClose()
+    // handleClose()
   }
 
   const handleCancel = () => {
@@ -49,15 +51,17 @@ export function useConfirm(
         </DialogHeader>
 
         <DialogFooter className="pt-2">
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="outline" onClick={handleCancel} disabled={!!isLoading}>
             Cancelar
           </Button>
 
-          <Button onClick={handleConfirm}> Confirmar </Button>
+          <Button onClick={handleConfirm} disabled={!!isLoading}>
+            {isLoading && <Loader2 className="mr-2 animate-spin" />} Confirmar
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 
-  return [ConfirmationDialog, confirm]
+  return [ConfirmationDialog, confirm, handleClose]
 }
