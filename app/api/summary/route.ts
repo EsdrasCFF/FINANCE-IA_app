@@ -1,13 +1,20 @@
+import { auth } from '@clerk/nextjs/server'
 import { isMatch } from 'date-fns'
 import { NextResponse } from 'next/server'
 
-import { getSummaryByCategories } from '@/app/_actions/categories/get-summary-by-categories'
 import { getSummary } from '@/app/_actions/dashboard/get-summary'
 import { getTotalBalance } from '@/app/_actions/dashboard/get-total-balance'
+import { getSummaryByCategories } from '@/app/_features/dashboard/api/get-summary-by-categories'
 import { getLastTransactions } from '@/app/_features/transactions/actions/get-last-transactions'
 import { getMonthRange, getMonthRangeNow } from '@/app/_lib/utils'
 
 export async function GET(request: Request) {
+  const { userId } = await auth()
+
+  if (!userId) {
+    return NextResponse.json({ error: { message: 'UNAUTHORIZED' } }, { status: 401 })
+  }
+
   try {
     const url = new URL(request.url)
 
@@ -36,7 +43,7 @@ export async function GET(request: Request) {
 
     const actualBalance = await getTotalBalance()
 
-    const categorySummary = await getSummaryByCategories(period)
+    const categorySummary = await getSummaryByCategories(period, userId)
 
     const lastTransactions = await getLastTransactions()
 
