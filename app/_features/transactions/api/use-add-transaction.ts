@@ -38,12 +38,9 @@ export function useAddTransaction(month: string) {
 
       return data
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       toast.success('Nova transação cadastrada!')
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['summary', key] }),
-        queryClient.invalidateQueries({ queryKey: ['transactions', key] }),
-      ])
+      queryClient.invalidateQueries({ queryKey: ['summary', key] })
     },
   })
 
