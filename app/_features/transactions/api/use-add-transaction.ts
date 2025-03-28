@@ -15,10 +15,10 @@ interface IResponseType extends Transaction {
   category: string | null
 }
 
-export function useAddTransaction(month: string | null) {
+export function useAddTransaction(month: string) {
   const queryClient = useQueryClient()
 
-  const key = month || 'deafult'
+  const key = month
 
   const mutate = useMutation<IResponseType, Error, IRequestType>({
     mutationFn: async (params) => {

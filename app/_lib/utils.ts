@@ -85,3 +85,11 @@ export function getMonthRangeNow() {
 
   return { firstDay, lastDay }
 }
+
+export function generateDefaultMonth() {
+  const today = new Date()
+
+  const month = format(today, 'yyyy-MM')
+
+  return month
+}

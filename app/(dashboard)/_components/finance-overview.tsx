@@ -17,7 +17,7 @@ import CountUp from 'react-countup'
 import { AddTransactionButton } from '@/app/_components/add-transaction-button'
 import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
 import { useGetSummary } from '@/app/_features/dashboard/api/use-get-summary'
-import { formatCurrency } from '@/app/_lib/utils'
+import { formatCurrency, generateDefaultMonth } from '@/app/_lib/utils'
 import { LastTransactions } from '@/app/(dashboard)/_components/last-transactions'
 
 import { ExpensesPerCategory } from './expenses-per-category'
@@ -32,9 +32,11 @@ interface Props {
 export function FinanceOverview({ categories }: Props) {
   const [month, setMonth] = useQueryState('month')
 
+  const defaultMonth = generateDefaultMonth()
+
   const [isViewBalance, setIsViewBalance] = useState(false)
 
-  const getSummaryQuery = useGetSummary(month)
+  const getSummaryQuery = useGetSummary(month || defaultMonth)
 
   const result = getSummaryQuery.data?.summary || {
     DEPOSIT: 0,
