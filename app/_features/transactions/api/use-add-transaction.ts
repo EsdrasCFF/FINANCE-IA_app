@@ -18,8 +18,6 @@ interface IResponseType extends Transaction {
 export function useAddTransaction(month: string) {
   const queryClient = useQueryClient()
 
-  const key = month
-
   const mutate = useMutation<IResponseType, Error, IRequestType>({
     mutationFn: async (params) => {
       const response = await fetch(`/api/transactions`, {
@@ -40,7 +38,8 @@ export function useAddTransaction(month: string) {
     },
     onSuccess: () => {
       toast.success('Nova transação cadastrada!')
-      queryClient.invalidateQueries({ queryKey: ['summary', key] })
+      queryClient.invalidateQueries({ queryKey: ['summary', month] })
+      queryClient.invalidateQueries({ queryKey: ['transactions', month] })
     },
   })
 
