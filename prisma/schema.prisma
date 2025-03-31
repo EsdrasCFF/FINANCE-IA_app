@@ -14,18 +14,18 @@ datasource db {
 }
 
 model Transaction {
-  id String @id @default(cuid())
-  name String
-  type TransactionType
+  id     String          @id @default(cuid())
+  name   String
+  type   TransactionType
   amount Int
-  date DateTime
-  
-  categoryId String? @map("category_id")
-  category Category? @relation(fields: [categoryId], references: [id])
+  date   DateTime
+
+  categoryId String?   @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id])
 
   paymentMethod PaymentMethod @map("payment_method")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt
 
   userId String @map("user_id")
 
@@ -33,14 +33,15 @@ model Transaction {
 }
 
 model Category {
-  id String @id @default(cuid())
+  id   String          @id @default(cuid())
   name String
   type TransactionType
 
-  userId String @map("user_id")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  userId      String        @map("user_id")
+  Transaction Transaction[]
 
   @@map("categories")
-  Transaction Transaction[]
 }
 
 enum TransactionType {
