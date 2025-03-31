@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { MoreHorizontal, PencilIcon, TrashIcon } from 'lucide-react'
 
 import { Button } from '@/app/_components/ui/button'
@@ -7,43 +9,40 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu'
-import { useDeleteTransaction } from '@/app/_features/transactions/api/use-delete-transaction'
 import { useConfirm } from '@/app/_features/transactions/hooks/use-confirm'
-import { useEditTransactionStore } from '@/app/_features/transactions/hooks/use-edit-transaction-store'
-import { useQueryParamsStore } from '@/app/_stores/use-query-params-store'
+
+import { useEditCategoryStore } from '../hooks/use-edit-category-store'
 
 interface ActionsControlProps {
   id: string
 }
 
 export function ActionsControl({ id }: ActionsControlProps) {
-  const { onOpen } = useEditTransactionStore()
+  const { onOpen } = useEditCategoryStore()
 
-  const { month } = useQueryParamsStore()
+  // const deleteTransactionMutation = useDeleteTransaction(month)
 
-  const deleteTransactionMutation = useDeleteTransaction(month)
-
-  const isLoading = deleteTransactionMutation.isPending
+  // const isLoading = deleteTransactionMutation.isPending
 
   const [ConfirmationDialog, confirm, handleClose] = useConfirm(
     'Você tem certeza?',
-    'Gostaria de deletar essa transação',
-    isLoading
+    'Gostaria de deletar essa transação'
+    // isLoading
   )
 
   async function handleDeleteTransactionClick() {
     const ok = await confirm()
 
-    if (ok) {
-      deleteTransactionMutation.mutate(
-        { id },
-        {
-          onSuccess: () => {
-            handleClose()
-          },
-        }
-      )
-    }
+    // if (ok) {
+    //   deleteTransactionMutation.mutate(
+    //     { id },
+    //     {
+    //       onSuccess: () => {
+    //         handleClose()
+    //       },
+    //     }
+    //   )
+    // }
   }
 
   return (
