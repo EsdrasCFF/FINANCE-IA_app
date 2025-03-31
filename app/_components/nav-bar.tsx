@@ -25,15 +25,15 @@ export function NavBar() {
       pathname: '/transactions',
     },
     {
-      href: `/subscription${queryParams}`,
-      label: 'Assinatura',
-      pathname: '/subscription',
-    },
-    {
       href: `/categories${queryParams}`,
       label: 'Categorias',
       pathname: '/categories',
     },
+    // {
+    //   href: `/subscription${queryParams}`,
+    //   label: 'Assinatura',
+    //   pathname: '/subscription',
+    // },
   ]
 
   return (
