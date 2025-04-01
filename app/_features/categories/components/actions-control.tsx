@@ -10,7 +10,9 @@ import {
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu'
 import { useConfirm } from '@/app/_features/transactions/hooks/use-confirm'
+import { useQueryParamsStore } from '@/app/_stores/use-query-params-store'
 
+import { useDeleteCategory } from '../api/use-delete-category'
 import { useEditCategoryStore } from '../hooks/use-edit-category-store'
 
 interface ActionsControlProps {
@@ -20,29 +22,31 @@ interface ActionsControlProps {
 export function ActionsControl({ id }: ActionsControlProps) {
   const { onOpen } = useEditCategoryStore()
 
-  // const deleteTransactionMutation = useDeleteTransaction(month)
+  const { month } = useQueryParamsStore()
 
-  // const isLoading = deleteTransactionMutation.isPending
+  const deleteCategoryMutation = useDeleteCategory()
+
+  const isLoading = deleteCategoryMutation.isPending
 
   const [ConfirmationDialog, confirm, handleClose] = useConfirm(
     'Você tem certeza?',
-    'Gostaria de deletar essa transação'
-    // isLoading
+    'Gostaria de deletar essa categoria',
+    isLoading
   )
 
-  async function handleDeleteTransactionClick() {
+  async function handleDeleteCategoryClick() {
     const ok = await confirm()
 
-    // if (ok) {
-    //   deleteTransactionMutation.mutate(
-    //     { id },
-    //     {
-    //       onSuccess: () => {
-    //         handleClose()
-    //       },
-    //     }
-    //   )
-    // }
+    if (ok) {
+      deleteCategoryMutation.mutate(
+        { id, month },
+        {
+          onSuccess: () => {
+            handleClose()
+          },
+        }
+      )
+    }
   }
 
   return (
@@ -60,7 +64,7 @@ export function ActionsControl({ id }: ActionsControlProps) {
           <DropdownMenuItem className="hover:cursor-pointer" onClick={() => onOpen(id)}>
             <PencilIcon className="mr-3" /> Editar
           </DropdownMenuItem>
-          <DropdownMenuItem className="hover:cursor-pointer" onClick={handleDeleteTransactionClick}>
+          <DropdownMenuItem className="hover:cursor-pointer" onClick={handleDeleteCategoryClick}>
             <TrashIcon className="mr-3" /> Deletar
           </DropdownMenuItem>
         </DropdownMenuContent>
