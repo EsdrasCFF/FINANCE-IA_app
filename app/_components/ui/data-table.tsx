@@ -7,7 +7,8 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { Loader2 } from 'lucide-react'
+import { Loader2, TrashIcon } from 'lucide-react'
+import React from 'react'
 
 import { Button } from './button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table'
@@ -23,16 +24,24 @@ export function DataTable<TData, TValue>({
   data,
   isLoading,
 }: DataTableProps<TData, TValue>) {
+  const [rowSelection, setRowSelection] = React.useState({})
+
   const table = useReactTable({
     data,
     columns,
+    onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      rowSelection,
+    },
   })
+
+  const hasRowSelected = table.getFilteredSelectedRowModel().rows.length
 
   return (
     <>
-      <div className="rounded-md border">
+      <div className="relative rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -72,6 +81,14 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
+
+        {hasRowSelected > 0 && (
+          <div className="absolute right-56 top-[-4rem] z-50 flex-1 text-sm text-white">
+            <Button variant="outline">
+              <TrashIcon /> Excluir ({hasRowSelected})
+            </Button>
+          </div>
+        )}
       </div>
       <div className="flex items-center justify-end space-x-2">
         <Button
