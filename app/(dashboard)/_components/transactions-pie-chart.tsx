@@ -1,7 +1,7 @@
 'use client'
 
 import { TransactionType } from '@prisma/client'
-import { Loader2, PiggyBankIcon, TrendingDown, TrendingUp } from 'lucide-react'
+import { ChartPie, Loader2, PiggyBankIcon,TrendingDown, TrendingUp } from 'lucide-react'
 import { Pie, PieChart } from 'recharts'
 
 import { Card, CardContent, CardFooter } from '@/app/_components/ui/card'
@@ -72,21 +72,32 @@ export function TransactionsPieChart({
     },
   ]
 
+  const hasData = chartData.reduce((acc, cur) => (acc += cur.amount), 0) > 0 ? true : false
+
   return (
     <Card className="flex h-full flex-col">
       <CardContent className="flex-1 pt-10">
-        {isLoading && (
+        {isLoading && !hasData && (
           <div className="flex h-full w-full items-center justify-center">
             <Loader2 className="animate-spin" />
           </div>
         )}
-        {!isLoading && (
+        {!isLoading && hasData && (
           <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
             <PieChart>
               <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
               <Pie data={chartData} dataKey="amount" nameKey="type" innerRadius={65}></Pie>
             </PieChart>
           </ChartContainer>
+        )}
+
+        {!isLoading && !hasData && (
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <ChartPie size={40} />
+              <span className="text-xs">Não há dados no período</span>
+            </div>
+          </div>
         )}
       </CardContent>
       <CardFooter className="flex-col gap-3 text-sm">
