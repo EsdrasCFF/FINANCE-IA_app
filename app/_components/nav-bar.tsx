@@ -29,11 +29,11 @@ export function NavBar() {
       label: 'Categorias',
       pathname: '/categories',
     },
-    // {
-    //   href: `/subscription${queryParams}`,
-    //   label: 'Assinatura',
-    //   pathname: '/subscription',
-    // },
+    {
+      href: `/subscription${queryParams}`,
+      label: 'Assinatura',
+      pathname: '/subscription',
+    },
   ]
 
   return (
