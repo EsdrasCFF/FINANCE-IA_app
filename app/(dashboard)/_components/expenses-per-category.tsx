@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { ChartBar, Loader2 } from 'lucide-react'
 
 import { CardContent, CardHeader, CardTitle } from '@/app/_components/ui/card'
 import { ScrollArea } from '@/app/_components/ui/scroll-area'
@@ -9,9 +9,12 @@ import { CategoryDetails } from './category-details'
 
 interface Props {
   categorySummary: ICategorySummary[] | undefined
+  isLoading: boolean
 }
 
-export function ExpensesPerCategory({ categorySummary }: Props) {
+export function ExpensesPerCategory({ categorySummary, isLoading }: Props) {
+  const hasData = categorySummary != undefined ? categorySummary : []
+
   return (
     <div className="flex h-full w-full flex-col">
       <CardHeader>
@@ -24,15 +27,23 @@ export function ExpensesPerCategory({ categorySummary }: Props) {
 
       <ScrollArea className="h-full w-full pb-4">
         <CardContent className="flex h-full w-full flex-col">
-          {/* <Separator className="mb-6" /> */}
-          {!categorySummary && (
+          {isLoading && (
             <div className="mt-32 flex h-full w-full items-center justify-center">
               <Loader2 className="animate-spin" />
             </div>
           )}
 
-          {categorySummary &&
-            categorySummary.map((data) => <CategoryDetails categorySummary={data} key={data.id} />)}
+          {!isLoading && hasData.length < 1 && (
+            <div className="mt-28 flex h-full w-full items-center justify-center">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <ChartBar size={40} />
+                <span className="text-xs">Não há dados no período</span>
+              </div>
+            </div>
+          )}
+
+          {hasData.length > 0 &&
+            hasData.map((data) => <CategoryDetails categorySummary={data} key={data.id} />)}
         </CardContent>
       </ScrollArea>
     </div>

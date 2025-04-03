@@ -148,7 +148,7 @@ export function FinanceOverview({ categories }: Props) {
             </div>
 
             <Card className="h-full w-full overflow-hidden">
-              <ExpensesPerCategory categorySummary={categoriesSummary} />
+              <ExpensesPerCategory categorySummary={categoriesSummary} isLoading={isLoading} />
             </Card>
           </div>
         </div>
