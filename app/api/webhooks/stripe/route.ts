@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { clerkClient } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
@@ -12,7 +14,7 @@ export async function POST(request: Request) {
   const text = await request.text()
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2024-10-28.acacia',
+    apiVersion: '2025-02-24.acacia',
   })
 
   const event = stripe.webhooks.constructEvent(
@@ -21,22 +23,38 @@ export async function POST(request: Request) {
     process.env.STRIPE_WEBHOOK as string
   )
 
+  const client = await clerkClient()
+
   switch (event.type) {
-    case 'invoice.paid':
-      const { customer, subscription, subscription_details } = event.data.object
+    case 'invoice.paid': {
+      const invoice = event.data.object as Stripe.Invoice
+      const parent = (invoice as any).parent
 
-      const clerkUserId = subscription_details?.metadata?.clerk_user_id as string
+      const subscriptionId = parent?.subscription_details?.subscription
 
-      ;(await clerkClient()).users.updateUser(clerkUserId, {
+      if (!subscriptionId) {
+        console.warn('Missing subscription Id')
+        return NextResponse.json({ error: { message: 'STP0001' } })
+      }
+
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+      const clerkUserId = subscription.metadata.clerk_user_id
+
+      if (!clerkUserId) {
+        console.warn('clerk_user_id not found inside metada')
+        return NextResponse.json({ error: { message: 'STP0002' } })
+      }
+
+      await client.users.updateUser(clerkUserId, {
         privateMetadata: {
-          stripeCustomerId: customer,
-          stripeSubscriptionId: subscription,
+          stripeCustomerId: invoice.customer,
+          stripeSbscriptionId: subscription,
         },
         publicMetadata: {
           subscriptionPlan: 'premium',
         },
       })
-      break
+    }
   }
 
   return NextResponse.json({}, { status: 200 })
