@@ -5,7 +5,6 @@ import Stripe from 'stripe'
 
 export async function crateStripeCheckout() {
   const { userId } = await auth()
-
   if (!userId) {
     throw new Error('Unauthorized')
   }
@@ -13,9 +12,8 @@ export async function crateStripeCheckout() {
   if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error('Stripe secret key not found')
   }
-
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-    apiVersion: '2024-10-28.acacia',
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-02-24.acacia',
   })
 
   const session = await stripe.checkout.sessions.create({
@@ -27,6 +25,9 @@ export async function crateStripeCheckout() {
       metadata: {
         clerk_user_id: userId,
       },
+    },
+    metadata: {
+      clerk_user_id: userId,
     },
     line_items: [
       {
