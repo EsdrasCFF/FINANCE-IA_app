@@ -1,3 +1,6 @@
+'use client'
+
+import { useUser } from '@clerk/nextjs'
 import { Check, X } from 'lucide-react'
 
 import { Badge } from '@/app/_components/ui/badge'
@@ -6,6 +9,10 @@ import { Card } from '@/app/_components/ui/card'
 import { Separator } from '@/app/_components/ui/separator'
 
 export function BasicPlan() {
+  const { user } = useUser()
+
+  const hasPremiumPlan = user?.publicMetadata.subscriptionPlan == 'premium'
+
   return (
     <Card className="relative flex w-full max-w-[450px] flex-col py-10">
       {/* PRINCE AND DESCRIPTION */}
@@ -33,14 +40,17 @@ export function BasicPlan() {
         <Button
           variant="outline"
           className="mt-3 rounded-full border border-primary font-bold text-primary"
+          disabled={hasPremiumPlan}
         >
           Fazer Upgrade
         </Button>
       </div>
 
-      <Badge className="absolute left-10 top-10 w-fit bg-primary/20 px-4 text-base font-semibold text-primary">
-        Atual
-      </Badge>
+      {!hasPremiumPlan && (
+        <Badge className="absolute left-10 top-10 w-fit bg-primary/20 px-4 text-base font-semibold text-primary">
+          Atual
+        </Badge>
+      )}
     </Card>
   )
 }
