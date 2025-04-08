@@ -55,6 +55,26 @@ export async function POST(request: Request) {
         },
       })
     }
+    case 'customer.subscription.deleted': {
+      const subscription = await stripe.subscriptions.retrieve(event.data.object.id)
+
+      const clerkUserId = subscription.metadata.clerk_user_id
+
+      if (!clerkUserId) {
+        console.warn('clerk_user_id not found inside metada')
+        return NextResponse.json({ error: { message: 'STP0002' } })
+      }
+
+      await client.users.updateUser(clerkUserId, {
+        privateMetadata: {
+          stripeCustomerId: null,
+          stripeSbscriptionId: null,
+        },
+        publicMetadata: {
+          subscriptionPlan: 'basic',
+        },
+      })
+    }
   }
 
   return NextResponse.json({}, { status: 200 })
