@@ -154,7 +154,7 @@ export function FinanceOverview({ categories }: Props) {
         </div>
 
         <Card className="h-full min-w-[400px] rounded-lg">
-          <LastTransactions transactions={lastTransactions} />
+          <LastTransactions transactions={lastTransactions} isLoading={isLoading} />
         </Card>
       </div>
     </div>
