@@ -17,9 +17,10 @@ import { transactionsColumns } from '../_columns'
 
 interface Props {
   categories: Category[]
+  userCanAddTransaction: boolean
 }
 
-export function MainArea({ categories }: Props) {
+export function MainArea({ categories, userCanAddTransaction }: Props) {
   const [month, setMonth] = useQueryState('month')
 
   const getTransactionsQuery = useGetTransactions(month)
@@ -45,7 +46,7 @@ export function MainArea({ categories }: Props) {
         <h1 className="text-2xl font-bold">Transações</h1>
 
         <div className="flex gap-5">
-          <AddTransactionButton categories={categories} />
+          <AddTransactionButton categories={categories} addTransaction={userCanAddTransaction} />
           <TimeSelect month={month} setMonth={setMonth} />
         </div>
       </div>

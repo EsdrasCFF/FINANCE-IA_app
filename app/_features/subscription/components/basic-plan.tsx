@@ -8,7 +8,11 @@ import { Button } from '@/app/_components/ui/button'
 import { Card } from '@/app/_components/ui/card'
 import { Separator } from '@/app/_components/ui/separator'
 
-export function BasicPlan() {
+interface Props {
+  quantity: number
+}
+
+export function BasicPlan({ quantity }: Props) {
   const { user } = useUser()
 
   const hasPremiumPlan = user?.publicMetadata.subscriptionPlan == 'premium'
@@ -28,7 +32,11 @@ export function BasicPlan() {
       {/* SERVICES */}
       <div className="flex flex-col gap-4 px-10">
         <div className="flex gap-5">
-          <Check className="text-primary" /> <span>Apenas 10 transações por dia 7/10</span>
+          <Check className="text-primary" />
+          <span>
+            Apenas 20 transações por mês
+            <span className="font-bold text-primary"> {quantity}</span>/20
+          </span>
         </div>
         <div className="flex gap-5">
           <X /> <span>Relatórios de IA ilimitados</span>

@@ -27,9 +27,10 @@ import { TransactionsPieChart } from './transactions-pie-chart'
 
 interface Props {
   categories: Category[]
+  userCanAddTransaction: boolean
 }
 
-export function FinanceOverview({ categories }: Props) {
+export function FinanceOverview({ categories, userCanAddTransaction }: Props) {
   const [month, setMonth] = useQueryState('month')
 
   const defaultMonth = generateDefaultMonth()
@@ -120,7 +121,10 @@ export function FinanceOverview({ categories }: Props) {
                   {isViewBalance ? <Eye size={30} /> : <EyeOff size={30} />}
                 </button>
               </div>
-              <AddTransactionButton categories={categories} />
+              <AddTransactionButton
+                categories={categories}
+                addTransaction={userCanAddTransaction}
+              />
             </CardContent>
           </Card>
 

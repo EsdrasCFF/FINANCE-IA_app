@@ -1,10 +1,13 @@
+import { getTransactionsQuantity } from '../actions/get-transactions-count'
 import { BasicPlan } from './basic-plan'
 import { PremiumPlan } from './premium-plan'
 
-export function MainArea() {
+export async function MainArea() {
+  const quantity = await getTransactionsQuantity()
+
   return (
     <main className="flex gap-6">
-      <BasicPlan />
+      <BasicPlan quantity={quantity} />
       <PremiumPlan />
     </main>
   )
