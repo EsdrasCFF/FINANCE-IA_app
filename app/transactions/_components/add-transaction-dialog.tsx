@@ -72,13 +72,16 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
   const isLoading = form.formState.isSubmitting || addTransactionMutate.isPending
 
   async function handleSubmitForm(data: TransactionFormData) {
-    addTransactionMutate.mutate(data, {
-      onSuccess: () => {
-        onClose()
-        form.reset()
-        toast.success('Transação criada com sucesso!')
-      },
-    })
+    addTransactionMutate.mutate(
+      { ...data },
+      {
+        onSuccess: () => {
+          onClose()
+          form.reset()
+          toast.success('Transação criada com sucesso!')
+        },
+      }
+    )
   }
 
   function onCloseDialog() {
@@ -102,14 +105,13 @@ export function AddTransactionDialog({ categories }: AddTransactionsDialogProps)
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmitForm)} className="space-y-5">
             <FormField
-              disabled={isLoading}
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Título</FormLabel>
                   <FormControl>
-                    <Input placeholder="Digite o título..." {...field} />
+                    <Input placeholder="Digite o título..." {...field} disabled={isLoading} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
