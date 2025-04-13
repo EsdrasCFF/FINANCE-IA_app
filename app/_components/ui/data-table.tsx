@@ -2,8 +2,10 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table'
@@ -11,20 +13,24 @@ import { Loader2, TrashIcon } from 'lucide-react'
 import React from 'react'
 
 import { Button } from './button'
+import { Input } from './input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   isLoading?: boolean
+  page?: 'categories' | 'transactions'
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   isLoading,
+  page,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
   const table = useReactTable({
     data,
@@ -32,8 +38,11 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       rowSelection,
+      columnFilters,
     },
   })
 
@@ -42,6 +51,16 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <div className="relative rounded-md border">
+        {page && page == 'categories' && (
+          <div className="absolute right-60 top-[-80px] flex items-center py-4">
+            <Input
+              placeholder="Pesquisar categorias..."
+              value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+              onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+              className="max-w-sm"
+            />
+          </div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

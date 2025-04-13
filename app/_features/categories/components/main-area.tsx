@@ -14,7 +14,12 @@ export function MainArea() {
 
   return (
     <main className="h-full w-full space-y-6">
-      <DataTable columns={categorieColumns} data={categories} isLoading={isLoading} />
+      <DataTable
+        columns={categorieColumns}
+        data={categories}
+        isLoading={isLoading}
+        page="categories"
+      />
     </main>
   )
 }
