@@ -37,12 +37,14 @@
     "next-themes": "^0.4.6",
     "number": "^0.0.1",
     "nuqs": "^2.4.1",
+    "openai": "^4.93.0",
     "prisma": "^5.21.1",
     "react": "^18",
     "react-countup": "^6.5.3",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.54.2",
+    "react-markdown": "^9.0.1",
     "react-number-format": "^5.4.3",
     "react-select": "^5.10.1",
     "recharts": "^2.15.1",
@@ -55,6 +57,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

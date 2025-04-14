@@ -17,6 +17,7 @@ import CountUp from 'react-countup'
 import { AddTransactionButton } from '@/app/_components/add-transaction-button'
 import { Card, CardContent, CardHeader } from '@/app/_components/ui/card'
 import { useGetSummary } from '@/app/_features/dashboard/api/use-get-summary'
+import { IaReportButton } from '@/app/_features/dashboard/components/ia-report-button'
 import { formatCurrency, generateDefaultMonth } from '@/app/_lib/utils'
 import { LastTransactions } from '@/app/(dashboard)/_components/last-transactions'
 
@@ -85,7 +86,11 @@ export function FinanceOverview({ categories, userCanAddTransaction }: Props) {
     <div className="mb-6 flex h-[880px] w-full flex-col">
       <div className="flex h-[80px] w-full items-center justify-between py-5">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <TimeSelect setMonth={setMonth} month={month} />
+
+        <div className="flex gap-3">
+          <IaReportButton />
+          <TimeSelect setMonth={setMonth} month={month} />
+        </div>
       </div>
       {/* grid max-h-[500px] min-h-[500px] flex-1 grid-cols-[2fr,1fr] gap-6 */}
       <div className="flex h-[800px] max-h-[800px] min-h-[800px] w-full gap-6">
