@@ -15,8 +15,8 @@ export default async function TransactionPage() {
 
   return (
     <div className="grid h-full grid-cols-2">
-      <div className="mx-auto flex h-full w-full max-w-screen-sm flex-col justify-center">
-        <Image src="logo.svg" alt="Logo" width={173} height={39} />
+      <div className="flex h-[500px] w-full max-w-screen-sm flex-col justify-center px-6">
+        {/* <Image src="logo.svg" alt="Logo" width={173} height={39} /> */}
 
         <h1 className="mt-8 text-4xl font-bold">Bem-Vindo(a)</h1>
 
@@ -32,8 +32,14 @@ export default async function TransactionPage() {
         </SignInButton>
       </div>
 
-      <div className="relative h-full w-full">
-        <Image src="/login.png" alt="Faça Login" fill className="object-cover" />
+      <div className="relative h-full w-full overflow-hidden">
+        <Image
+          src="/login.png"
+          alt="Faça Login"
+          width={800}
+          height={800}
+          className="object-cover"
+        />
       </div>
     </div>
   )

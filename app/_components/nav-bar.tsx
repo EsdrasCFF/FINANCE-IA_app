@@ -7,6 +7,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 export function NavBar() {
   const pathname = usePathname()
+
   const searchParams = useSearchParams()
 
   const month = searchParams.get('month')
@@ -43,17 +44,19 @@ export function NavBar() {
         <Link href={`/${queryParams}`}>
           <Image src="/logo.svg" width={173} height={39} alt="Logo" />
         </Link>
-        {links.map((link) => (
-          <Link
-            href={link.href}
-            key={link.href}
-            className={
-              pathname == link.pathname ? 'font-bold text-primary' : 'text-muted-foreground'
-            }
-          >
-            {link.label}
-          </Link>
-        ))}
+
+        {pathname != '/login' &&
+          links.map((link) => (
+            <Link
+              href={link.href}
+              key={link.href}
+              className={
+                pathname == link.pathname ? 'font-bold text-primary' : 'text-muted-foreground'
+              }
+            >
+              {link.label}
+            </Link>
+          ))}
       </div>
 
       {/* RIGHT SIDE */}
